@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Only for Admin"
+AuthUserFile C:/Users/leons/Desktop/lphotos/update/.htpasswd
+Require valid-user

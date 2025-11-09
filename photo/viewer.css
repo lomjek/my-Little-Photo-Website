@@ -1,0 +1,33 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh; /* Or any height you want */
+    overflow: hidden; /* Ensure no overflow */
+}
+
+.container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures the image scales correctly */
+}
+
+
+#back {
+    position: fixed;
+    height: 5%;
+    top: 0;
+    left: 0;
+}

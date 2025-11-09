@@ -1,92 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            .text{
-                font-size: x-large;
-                width: 100%;
-            }
-            label{
-                font-size: larger;
-            }
-            body{
-                background-color: #aaa;
-            }
-            #imgs{
-                width: 50%;
-                text-align: center;
-                font-size: x-large;
-            }
-            input {
-                margin-bottom: 2vh;
-            }
-        </style>
-        <script>
-            function is_collection_new(){
-                var needle = document.getElementById("cname").value;
-                const xhr = new XMLHttpRequest();
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            const responseText = xhr.responseText;
-                            const lines = responseText.split("\n");
-
-                            const isNeedleFound = lines.some(line => {
-                                const [firstElement] = line.split(":"); // Destructuring assignment
-                                const thingy = firstElement.replace(/-/g, " ");
-                                return thingy == needle;
-                            });
-
-                            if (isNeedleFound && needle != "") {
-                                document.getElementById("delete").style.display = "block";
-                                document.getElementById("cdate").style.display = "none";
-                                document.getElementById("lcdate").style.display = "none";
-                                document.getElementById("cbcol").style.display = "none";
-                                document.getElementById("lcbcol").style.display = "none";
-                                document.getElementById("ctcol").style.display = "none";
-                                document.getElementById("lctcol").style.display = "none";
-                                document.getElementById("newc").value = "false";
-                            } else {
-                                document.getElementById("delete").style.display = "none";
-                                document.getElementById("cdate").style.display = "block";
-                                document.getElementById("lcdate").style.display = "block";
-                                document.getElementById("cbcol").style.display = "block";
-                                document.getElementById("lcbcol").style.display = "block";
-                                document.getElementById("ctcol").style.display = "block";
-                                document.getElementById("lctcol").style.display = "block";
-                                document.getElementById("newc").value = "true";
-                            }               
-
-                        } else {
-                            console.error('Request failed with status:', xhr.status);
-                        }
-                    }
-                };
-
-                xhr.open('POST', '../loading.php', true);
-                xhr.send();
-
-            }
-
-            function change_background(){
-                var bcolor = document.getElementById("cbcol").value;
-                document.body.style.backgroundColor = bcolor;
-            }
-
-            function change_color(){
-                var tcolor = document.getElementById("ctcol").value;
-                document.body.style.color = tcolor;
-            }
-        </script>
+        <link rel="stylesheet" href="updaters.css" type="text/css"/>
+        <script src="add_script.js"></script>
         <title>Add Images</title>
     </head>
     <body>
         <h1 id="titl" style="text-align: center; font-size: 50px;">Update Collections</h1>
         <form method="POST" enctype="multipart/form-data" action="upload.php">
-
-            <input placeholder="User" class="text" id="name" name="name" type="text" required> 
-            <input placeholder="Password" class="text" id="pswd" name="pswd" type="password" required> 
             
             <input placeholder="Collection name" class="text" oninput="is_collection_new()" id="cname" name="cname" type="text" required>
             <input type="hidden" id="newc" name="newc" value="true">

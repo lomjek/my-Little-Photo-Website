@@ -67,12 +67,13 @@ function display(folder, jpgcnt, date, bcolor, tcolor){
     table.style.backgroundColor = bcolor;
 
     var link = document.createElement('a');
-    link.href = 'photos/' + folder + '/main.php';
+    link.href = 'photos/' + folder + '/';
     link.appendChild(table);
 
     document.body.appendChild(link);
     document.body.appendChild(document.createElement('br'));
 
+    document.getElementById("LoadingIndicator").style.display = "none";
 }
 loadfolders();
   

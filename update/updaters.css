@@ -1,0 +1,24 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
+.text{
+    font-size: x-large;
+    width: 100%;
+}
+label{
+    font-size: larger;
+}
+body{
+    background-color: #aaa;
+}
+#imgs{
+    width: 50%;
+    text-align: center;
+    font-size: x-large;
+}
+input {
+    margin-bottom: 2vh;
+}

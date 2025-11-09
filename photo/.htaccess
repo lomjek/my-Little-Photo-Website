@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /photo/
+
+# main.php problem
+# Avoid rewriting for the main.php file itself
+RewriteCond %{REQUEST_URI} !^/photo/main.php$
+
+# Redirect any subfolder under /photos/ to main.php with query parameter c
+RewriteRule ^([^/]+)/(.+)$ main.php?s=$1&f=$2 [L]
