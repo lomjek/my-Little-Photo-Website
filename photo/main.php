@@ -11,8 +11,6 @@ $file = $_GET['f'];
 $collection = urldecode($collection);
 $file = urldecode($file);
 
-$documentRoot = $_SERVER['DOCUMENT_ROOT'];
-
 $path = '/photos/' . $collection . "/" . $file;
 
 echo "<link rel='stylesheet' href='/photo/viewer.css' type='text/css'/>";

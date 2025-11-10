@@ -1,4 +1,4 @@
 
 Geocaches
-#333
-#ccc
+#000000
+#cdab8f

@@ -7,8 +7,6 @@
 
 echo 'Processing data started...<br>';
 
-$name = $_POST['name'];
-$pswd = $_POST['pswd'];
 $cname = $_POST['cname'];
 $cdate = $_POST['cdate'];
 $color = $_POST['cbcol'];

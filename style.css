@@ -25,7 +25,10 @@ table {
     padding-bottom: 10px;
 }
 td {
-    width: 25%;
+    width: -webkit-fit-content; 
+    width: -moz-fit-content; 
+    width: fit-content;
+    min-width: 25%;
 }
 
 h2 {

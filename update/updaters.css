@@ -22,3 +22,12 @@ body{
 input {
     margin-bottom: 2vh;
 }
+.hidden{
+    display: none;
+}
+#delete{
+    background-color: #f00; 
+    color: #000; 
+    width: 100%; 
+    font-size: x-large;
+}
