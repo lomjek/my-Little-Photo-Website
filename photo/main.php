@@ -19,7 +19,7 @@ echo "<body>";
 
 echo "<div class='container'>";
 
-echo "<img id='img' src='" . $path . "' alt='Something strange...'>";
+echo "<img draggable='false' id='img' src='" . $path . "' alt='Something strange...'>";
 
 echo "</div>";
 

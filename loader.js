@@ -13,7 +13,6 @@ async function loadfolders() {
                 const responseText = xhr.responseText;
                 var lines = responseText.split("\n");
                 lines.forEach(line => {
-                    console.log(line);
                     var arr = line.split(":");
                     if (arr[1] != undefined){
                         display(arr[0], arr[1], arr[2], arr[3], arr[4]);
@@ -70,11 +69,14 @@ function display(folder, jpgcnt, date, bcolor, tcolor){
     link.href = 'photos/' + folder + '/';
     link.appendChild(table);
 
-    document.body.appendChild(link);
-    document.body.appendChild(document.createElement('br'));
+    if (jpgcnt != 0){
+        document.body.appendChild(link);
+        document.body.appendChild(document.createElement('br'));
 
-    document.getElementById("LoadingIndicator").style.display = "none";
+        document.getElementById("LoadingIndicator").style.display = "none";
+    }
 }
+
 loadfolders();
   
   

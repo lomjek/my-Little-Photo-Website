@@ -89,6 +89,7 @@ function sneaky(){
 }
 
 function is_collection_new(){
+    document.getElementById("cname").value = document.getElementById("cname").value.replace(/[.,><:;/?!@#$%^&*()_+={$$$$\\}]/g, '');
     var needle = document.getElementById("cname").value;
 
     for (const line of responses){
@@ -97,7 +98,8 @@ function is_collection_new(){
         }
 
         data = line.split(":");
-        if (data[0] == needle){
+        name = data[0].replaceAll('-', " ");
+        if (name == needle || data[0] == needle){
             document.body.style.backgroundColor = data[3];
             document.body.style.color = data[4];
 

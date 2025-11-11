@@ -10,7 +10,6 @@ I know that there are shiny Frameworks and stuff, but I wanted to go with someth
 ## If you host this yourself, you have to verify following things:
 - Is _rewrite_mod_ for Apache2 enabled and active?
 - Is the hosting folder allowed to use _.htaccess_?
-- Is the path to the _.htpasswd_ file inside _update/.htaccess_ correct?
 - Are the correct owners and permissions set? (php has to be allowed to write into the folder.)
 - Do you have python3 and PIL or pillow installed?
 - Is your php configuration right? (Filesize, POST_MAX_SIZE)
