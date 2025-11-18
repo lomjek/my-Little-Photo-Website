@@ -1,4 +1,3 @@
 
-Geocaches
-#000000
-#cdab8f
+#aaaaaa
+#333333

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Upload Files</title>
+        <style>
+            @font-face {
+                font-family: Nirmala;
+                src: url(../../Nirmala.ttc);
+            }
+            #Title {
+                text-align: center;
+                color: #333;
+                font-size: 100px;
+                font-family: Nirmala;
+            }
+            body {
+                background-color: #aaa;
+            }
+            input{
+                width: 100%;
+                font-size: 40px;
+                font-family: Nirmala;
+            }
+            button, select, option {
+                width: 100%;
+                font-family: Nirmala;
+                font-size: 40px;
+            }
+            hr {
+                height: 5px;
+                border: 0px;
+                background-color: #333333;
+            }
+            #middle {
+                border-left: 5px solid #333333;
+                border-right: 5px solid #333333;
+            }
+            td {
+                width: 25%;
+                text-align: center;
+            }
+            h2 {
+                font-size: 40px;
+                font-family: Nirmala;
+            }
+            p{
+                font-size: 20px;
+            }
+        </style>
+
+        <script>
+            var first = true;
+            var order = [];
+            var bcols = [];
+            var tcols = [];
+
+            function startUpload() {
+                document.getElementById("send").disabled = true;
+                const form = document.getElementById('uploadForm');
+                const formData = new FormData(form);
+                const progressKey = new Date().toLocaleTimeString();
+            
+                // Append the progress key to the FormData for tracking
+                formData.append('PHP_SESSION_UPLOAD_PROGRESS', progressKey);
+            
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "upload.php", true);
+            
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        const percentComplete = (event.loaded / event.total) * 100;
+                        document.getElementById('progressPercent').textContent = Math.round(percentComplete);
+                        document.getElementById('progressBar').value = percentComplete;
+                    }
+                };
+            
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        console.log(xhr.responseText)
+                        if (xhr.responseText){
+                            alert("Upload done, thumbnail generated, no errors");
+                        } else {
+                            alert("Something failed");
+                        }
+                    }
+                };
+            
+                xhr.send(formData);
+                document.getElementById("send").disabled = false;
+            }
+
+            function getOrder(){
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const responseText = xhr.responseText;
+                            var lines = responseText.split("\n");
+                            lines.forEach(line => {
+                                //console.log(line);
+                                var arr = line.split(":");
+                                if (arr[1] != undefined){
+                                    setUp(arr[0], arr[3], arr[4]);
+                                };
+                            });
+                        } else {
+                            console.error('Request failed with status:', xhr.status);
+                        }
+                    }
+                }
+
+                xhr.open('POST', '../../../loading.php', true);
+                xhr.send();
+
+                checkDisplay()
+            }
+            function setUp(name, bcol, tcol){
+                name = name.replaceAll("-", " ")
+                select = document.createElement("option");
+                select.value = name;
+                select.textContent = name;
+                document.getElementById("cname").appendChild(select);
+                order.push(name);
+                bcols.push(bcol);
+                tcols.push(tcol);
+            }
+            function checkDisplay(){
+                var value = document.getElementById("cname").value;
+                if (value === "..."){
+                    document.getElementById("send").disabled = true;
+                } else {
+                    document.getElementById("send").disabled = false;
+                    let index = order.indexOf(value);
+                    document.body.style.backgroundColor = bcols[index];
+                    document.getElementById("Title").style.color = tcols[index];
+                    document.getElementById("Para").style.color = tcols[index];
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                getOrder();
+                document.getElementById("cname").addEventListener('change', () => {
+                    checkDisplay();
+                });
+            });
+        </script>
+
+    </head>
+    <body>
+        <h1 id="Title">Upload Files</h1>
+
+        <div style="background-color: #808080 !important;"> <!--This is the menu div.-->
+            <hr>
+            <table style="padding: 0 !important; background-color: #808080;">
+                <tr>
+                    <td onclick="window.location.assign('../../')"><h2>Home</h2></td>
+                    <td onclick="window.location.assign('../')" id="middle"><h2>Main Update Page</h2></td>
+                    <td onclick="window.location.assign('./delete.html')"><h2>Delete Images</h2></td>
+                </tr>
+            </table>
+            <hr>
+        </div>
+
+        <br><br>
+
+        <form style="background-color: #aaa;" id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="files[]" multiple required accept=".jpg,.png,.jpeg,.webp">
+            <br><br>
+            <select name="collection" id="cname">
+                <option name="none" selected>...</option>
+            </select>
+            <br><br>
+            <button type="button" id="send" onclick="startUpload()">Upload</button>
+        </form>
+
+
+        <hr><br>
+        <p id="Para">Progress: <span id="progressPercent">0</span>%</p>
+        <progress id="progressBar" style="width: 100%;" value="0" max="100"></progress>
+    </body>
+</html>

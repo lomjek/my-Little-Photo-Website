@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Delete Images</title>
+        <style>
+            @font-face {
+                font-family: Nirmala;
+                src: url(../../Nirmala.ttc);
+            }
+            #Title {
+                text-align: center;
+                color: #333;
+                font-size: 100px;
+                font-family: Nirmala;
+            }
+            .inside {
+                text-align: left;
+            }
+            .open {
+                width: 100%;
+                max-height: 100px;
+            }
+
+            table {
+                width: 100%;
+                border-radius: 50px;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            td {
+                width: -webkit-fit-content; 
+                width: -moz-fit-content; 
+                width: fit-content;
+                min-width: 25%;
+            }
+
+            h2, input, option, select, label {
+                font-size: 40px;
+                width: 100%;
+                color: #333;
+                text-align: center;
+                font-family: Nirmala;
+            }
+            h3 {
+                font-size: 25px;
+                color: #333;
+                font-family: Nirmala;
+            }
+            body {
+                background-color: #aaa;
+            }
+            td {
+                text-align: center;
+            }
+            #middle {
+                border-left: 5px solid #333;
+                border-right: 5px solid #333;
+            }
+            hr {
+                height: 5px;
+                background-color: #333;
+            }
+        </style>
+        <script>
+            function get_collections(){
+                const xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const responseText = xhr.responseText;
+                            var lines = responseText.split("\n");
+                            lines.forEach(line => {
+                                //console.log(line);
+                                var arr = line.split(":");
+                                if (arr[1] != undefined){
+                                    display(arr[0], arr[1], arr[2], arr[3], arr[4]);
+                                };
+                            });
+                        } else {
+                            console.error('Request failed with status:', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', '../../loading.php', true);
+                xhr.send();
+            }
+            function display(folder, jpgcnt, date, bcolor, tcolor){
+                if (folder != ""){
+                    element = document.createElement("option");
+                    element.text = folder;
+                    document.getElementById("options").appendChild(element)
+                }
+            }
+            function delete_img(img){
+                if(confirm("Are you sure you want to delete: " + img.id)){
+                    window.location = "images/?c="+ document.getElementById("options").value + "&f=" + img.id;
+                }
+            }
+            function load_content(){
+                var parent = document.getElementById("Images");
+                while (parent.firstChild) {
+                    parent.removeChild(parent.firstChild);
+                }
+                const xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var names = xhr.responseText.split(":");
+                            for (let i = 0; i < names.length; i++) {
+                                let element = names[i];
+                                var img = document.createElement("img");
+                                img.src = "/thumbnails/" + document.getElementById("options").value + "/" + element + ".webp";
+                                img.id = element;
+                                img.addEventListener('click', function() {
+                                    delete_img(this);
+                                })
+                                document.getElementById("Images").appendChild(img);
+                            }
+                            return xhr.responseText;
+                        } else {
+                            console.error('Request failed with status:', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open('POST', 'images/loader.php', true);
+                var c_data = new FormData(document.getElementById("collection"));
+                xhr.send(c_data);
+            }
+            get_collections()
+        </script>
+    </head>
+    <body>
+        <h1 id="Title">Delete Images from LLP</h1>
+        <hr>
+        <table style="padding: 0 !important;">
+            <tr>
+                <td onclick="window.location.assign('../../')" class="menu"><h2>Home</h2></td>
+                <td onclick="window.location.assign('../')" class="menu" id="middle"><h2>Main Update</h2></td>
+                <td onclick="window.location.assign('../images')" class="menu"><h2>Add Images</h2></td>
+            </tr>
+        </table>
+        <hr>
+
+        <form id="collection">
+            <select id="options" name="cname" onchange="load_content()">
+                <option>...</option>
+            </select>
+        </form>
+        <div id="Images">
+
+        </div>
+    </body>
+</html>

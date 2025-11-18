@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /update/collection/
+
+# Avoid rewriting for the main.php file itself
+RewriteCond %{REQUEST_URI} !^/update/collection/main.php$
+
+# Allow direct access to specific PHP files (like update.php)
+RewriteRule ^([^/]+)/?$ main.php?c=$1 [L]

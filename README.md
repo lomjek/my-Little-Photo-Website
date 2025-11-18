@@ -13,6 +13,7 @@ I know that there are shiny Frameworks and stuff, but I wanted to go with someth
 - Are the correct owners and permissions set? (php has to be allowed to write into the folder.)
 - Do you have python3 and PIL or pillow installed?
 - Is your php configuration right? (Filesize, POST_MAX_SIZE)
+- Add this to the configuration file: __DirectoryIndex index.html index.php main.html main.php__
 - (Is the Firewall and Port Forwarding active?)
 
 ### This project is licensed under the MIT License.

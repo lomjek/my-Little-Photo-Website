@@ -11,22 +11,25 @@ if (isset($_GET['c'])) {
     header("Location: ../");
     exit;
 }
-
+if (!file_exists($current . '/data.txt')){
+    http_response_code(404);
+    exit;
+}
 
 $lines = file($current . '/data.txt');
 
 $date = $lines[0];
-$name = $lines[1];
-$folder = str_replace(" ", "-", $name);
-$color = $lines[2];
-$tcolor = $lines[3];
+$folder = $_GET['c'];
+$name = str_replace("-", " ", $folder);
+$color = $lines[1];
+$tcolor = $lines[2];
 
 echo '<title>' . $name . '</title>';
 echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
 echo '<meta charset="utf-8">';
 echo '<body style="background-color:' . $color .';">';
 echo '<h1 style="text-align: center; font-size: clamp(1rem, 20vw, 5rem); background-color:' . $color .'; color:' . $tcolor .';">' . $name . '</h1>';
-echo '<a href="../../index.html" style="background-color:' . $color .'; font-size: 25px; color:' . $tcolor .';">Return to home</a>';
+echo '<a href="../../" style="background-color:' . $color .'; font-size: 25px; color:' . $tcolor .';">Return to home</a>';
 
 $jpgFiles = glob($current . "/*.jpg");
 $JPGFiles = glob($current . "/*.JPG");
@@ -45,6 +48,6 @@ foreach ($files as $path) {
 }
 echo "</div>";
 
-echo '<a href="../../index.html" style="background-color:' . $color .'; font-size: 25px; color:' . $tcolor .';">Return to home</a>';
+echo '<a href="../../" style="background-color:' . $color .'; font-size: 25px; color:' . $tcolor .';">Return to home</a>';
 
 ?>

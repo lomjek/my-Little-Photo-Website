@@ -27,3 +27,9 @@ echo "<a href='/photos/" . $collection . "/'><img id='back' src='/photo/arrow.pn
 
 echo "</body>";
 ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><?php echo $file; ?></title>
+    </head>
+</html>
