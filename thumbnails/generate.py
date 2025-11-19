@@ -41,7 +41,7 @@ def create(inputfile, outputfile):
     except Exception as e:
         print("Error: " + str(e))
 
-log.write(f"Conversion at " + str(datetime.fromtimestamp(time.time()).strftime("%y, %m, %d, %H:%M:%S")) + str({args.inputf}) + str({args.outputf}))
+log.write(f"Conversion at {datetime.fromtimestamp(time.time()).strftime('%y, %m, %d, %H:%M:%S')}: {args.inputf}, {args.outputf}\t")
 create(args.inputf, args.outputf)
 log.write("\n")
 

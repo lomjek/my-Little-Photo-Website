@@ -6,16 +6,19 @@
 /*****************************************************/
 
 $currentDate = date("Ymd");
+print_r($currentDate);
 $directories = glob($_SERVER['DOCUMENT_ROOT'] . '/photos/*/', GLOB_ONLYDIR);
+print_r($directories);
 mt_srand($currentDate);
-$randomNumber = mt_rand(0, count($directories) - 1);
+$randomNumber = mt_rand(1, count($directories));
+print_r($randomNumber);
 
 $folder = $directories[$randomNumber];
-echo $folder;
-
-$randomFileIndex = mt_rand(0, count($directories) - 1);
+print_r($folder);
 
 $files = glob($folder . '/*.{jpg,png,jpeg,webp,JPG,PNG,JPEG,WEBP}', GLOB_BRACE);
+
+$randomFileIndex = mt_rand(1, count($files));
 
 $file = $files[$randomFileIndex];
 $localPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);

@@ -1,4 +1,10 @@
 <?php
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
 $c_file = "colors.txt";
 if (file_exists($c_file)) {
     $data = file_get_contents($c_file);
@@ -174,19 +180,19 @@ if (file_exists($o_file) || file_get_contents($o_file) != "") {
         <hr>
         <table style="padding: 0 !important;">
             <tr>
-                <td onclick="window.location.assign('about')" class="menu"><h2>About us</h2></td>
-                <td onclick="window.location.assign('iod')" class="menu" id="middle"><h2>Image of the day</h2></td>
+                <td onclick="window.location.assign('about')" class="menu"><h2>About Us</h2></td>
+                <td onclick="window.location.assign('iod/index.php')" class="menu" id="middle"><h2>Image of the Day</h2></td>
                 <td onclick="window.location.assign('update')" class="menu"><h2>Add Images</h2></td>
             </tr>
         </table>
         <hr>
 
-        <h3 id="maintenance">Currently there is server maintenance. We may shut down several times.</h3>
+        <!--<h3 id="maintenance">Currently there is server maintenance. We may shut down several times.</h3>-->
         <br><br>
 
         <div id="Images">
             <h2 id="LoadingIndicator" style="text-align: center;">Loading Elements...</h2>
         </div>
-        
+        <footer>This is Version 2.1 of the Image Website</footer>
     </body>
 </html>

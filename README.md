@@ -1,5 +1,6 @@
 # my Little Photo Website
 Welcome to my little Project. You can find this Webpage through all it's versions in this github repo. I am not very happy with every one of them, but hey! You can always improve.
+> If you have features suggestions you can write them under Issues
 
 ### Why this project?
 My cousin and I live appart and we wanted to have a way to exchange the photos we made, but also sharing it with the world. I have learned very much on my journey and have much to learn on the way ahead.

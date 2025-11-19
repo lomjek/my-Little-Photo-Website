@@ -78,10 +78,11 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                         console.log(xhr.responseText)
-                        if (xhr.responseText){
+                        if (xhr.responseText == 0){
                             alert("Upload done, thumbnail generated, no errors");
                         } else {
-                            alert("Something failed");
+                            alert("Something failed, error code following:");
+			    alert(xhr.responseText);
                         }
                     }
                 };
@@ -156,7 +157,7 @@
                 <tr>
                     <td onclick="window.location.assign('../../')"><h2>Home</h2></td>
                     <td onclick="window.location.assign('../')" id="middle"><h2>Main Update Page</h2></td>
-                    <td onclick="window.location.assign('./delete.html')"><h2>Delete Images</h2></td>
+                    <td onclick="window.location.assign('/update/delete/')"><h2>Delete Images</h2></td>
                 </tr>
             </table>
             <hr>

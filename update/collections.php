@@ -22,8 +22,8 @@ if (file_exists($c_file)) {
 
 print_r($_POST);
 $upgrade = $_POST['rename'];
-$name = str_replace(' ', '-', $_POST['cname']);
-$old_name = str_replace(' ', '-', $_POST['oldname']);
+$name = html_entity_decode(str_replace(' ', '-', $_POST['cname']));
+$old_name = html_entity_decode(str_replace(' ', '-', $_POST['oldname']));
 $date = $_POST['cdate'];
 $background = $_POST['bcol'];
 $text = $_POST['tcol'];
@@ -63,7 +63,6 @@ if ($upgrade) {
     } else {
         $success = false;
     }
-    echo "Step 1 done";
     if (mkdir($root . "/thumbnails/" . $name, 775)){
         $success = true;
     } else {
@@ -71,12 +70,11 @@ if ($upgrade) {
     }
     system("chgrp serverers " . $root . "/photos/" . $name);
     system("chgrp serverers " . $root . "/thumbnails/" . $name);
-    system("chmod 775 " . $root . "/photos/" . $name);
-    system("chmod 775 " . $root . "/thumbnails/" . $name);
     $filename = $root . "/photos/order.csv";
     $order = explode(",", file_get_contents($filename));
     array_unshift($order, $name);
     file_put_contents($filename, implode(", ", $order));
+    system("touch " . $root . "/photos/" . $name . "/data.txt");
 }
 if (file_put_contents($root . "/photos/" . $name . "/data.txt", $cdate . PHP_EOL . $background . PHP_EOL . $text)){
     $success = true;

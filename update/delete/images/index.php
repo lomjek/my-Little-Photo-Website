@@ -23,7 +23,7 @@ function unlink_with_extension($file, $extensions = ['jpg', 'png', 'webp', 'jpeg
     return false;
 }
 
-$filePath = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . $_GET['c'] . "/" . $_GET['f'];
+$filePath = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . html_specialchars($_GET['c']) . "/" . $_GET['f'];
 echo $filePath;
 if (unlink_with_extension($filePath)) {
     echo "File deleted successfully!";

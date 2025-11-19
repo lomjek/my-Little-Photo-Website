@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-
 if (isset($_POST['order']) && is_string($_POST['order'])) {
     $orderArray = explode(',', $_POST['order']);
     foreach ($orderArray as &$element) {
