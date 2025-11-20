@@ -1,0 +1,39 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
+@font-face {
+	font-family: Nirmala;
+	src: url(/data/Nirmala.ttc);
+}
+
+#Title {
+	text-align: center;
+	font-size: clamp(1rem, 20vw, 5rem);
+	font-family: Nirmala;
+    width: 100%;
+}
+#desc {
+    font-size: clamp(0.3rem, 5vw, 2rem);
+    font-family: Nirmala;
+	width: 100%;
+}
+#bcolor{
+	width: 49%;
+}
+#tcolor{
+	width: 49%;
+}
+button{
+	text-align: center;
+	font-size: clamp(1rem, 20vw, 5rem);
+	font-family: Nirmala;
+    width: 100%;	
+}
+h3 {
+	font-size: clamp(0.3rem, 5vw, 2rem);
+	font-family: Nirmala;
+	clear: both;
+}

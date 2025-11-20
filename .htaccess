@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /
+
+DirectoryIndex index.html index.php main.html main.php
+
+# Redirect /index.html to /
+RewriteCond %{THE_REQUEST} \ /index\.html
+RewriteRule ^index\.html$ / [L,R=301]
