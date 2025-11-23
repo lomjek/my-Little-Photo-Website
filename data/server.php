@@ -39,31 +39,6 @@ function mkd($dir, $permissions = 0755) {
 	return mkdir($dir, $permissions);
 }
 
-function get_iod($as_link = false){
-	//Set the seed
-	$currentDate = date("Ymd");
-	mt_srand($currentDate);
-	//Set the directory
-	$directories = get_collections();
-	$randomNumber = mt_rand(1, count($directories));
-	$directory = $directories[$randomNumber - 1];
-	//Set the image
-	$files = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos/' . $directory);
-	foreach ($files as $file){
-		if (str_starts_with($file, '.')){
-			$files = array_diff($files, [$file]);
-		}
-	}
-	$files = array_values($files);
-	$randomFileIndex = mt_rand(1, count($files));
-	$file = $files[$randomFileIndex - 1];
-	if ($as_link) {
-		$file = 'photo/' . $directory . '/' . $file;
-	} else {
-		$file = 'photos/' . $directory . '/.t_' . $file;
-	}
-	return $file;
-}
 function get_about_us(){
 	$speech = "Ako vidite ovaj tekst, onda se mojem Computeru više ne da radit, kako treba."; //This is a placeholder text and should be overwritten in the funtion.
 	$a_file = $_SERVER['DOCUMENT_ROOT'] . "/data/.d_"; //Set the path to the description file.
