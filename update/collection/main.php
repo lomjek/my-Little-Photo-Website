@@ -146,6 +146,6 @@ else {
 
         <div style="margin-bottom: 20px;"></div>
 
-        <button id='add' style="background-color: <?php echo $colors[0]; ?>; color: <?php echo $colors[1]; ?>;" onclick="<?php if ($_GET['a'] === 'new'){ echo 'publish()'; } else { echo 'redirect_to_delete()'; }?>"><?php if ($_GET['a'] === 'new'){ echo "Publiciraj"; } else { echo "Izbriši Skup"; }?></button>
+        <button id='add' style="background-color: <?php echo $colors[0]; ?>; color: <?php echo $colors[1]; ?>;" onclick="<?php if ($_GET['a'] === 'new'){ echo 'publish()'; } else { echo 'ask_delete()'; }?>"><?php if ($_GET['a'] === 'new'){ echo "Publiciraj"; } else { echo "Izbriši Skup"; }?></button>
     </body>
 </html>

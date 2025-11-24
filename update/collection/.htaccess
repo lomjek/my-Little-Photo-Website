@@ -3,13 +3,11 @@ RewriteEngine On
 # Set the rewrite base
 RewriteBase /update/collection/
 
-# Rewrite rule to internally redirect /update/collection/edit/Engelberg
+# Rewrite rule to internally redirect /update/collection/edit/
 RewriteRule ^edit/(.*)$ main.php?a=edit&c=$1 [L,QSA]
 
 # Rewrite rule to internally redirect /update/collection/new/
 RewriteRule ^new main.php?a=new [L,QSA]
 
-# Rewrite rule to internally redirect /update/collection/edit/Engelberg
+# Rewrite rule to internally redirect /update/collection/edit/
 RewriteRule ^edit/(.*)$ main.php?a=edit&c=$1 [L,QSA]
-
-RewriteRule ^delete$ delete.php [L]

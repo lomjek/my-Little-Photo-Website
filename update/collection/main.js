@@ -79,8 +79,31 @@ function publish(){
     }
 }
 
-function redirect_to_delete(){
-    window.location = '/update/collection/delete';
+async function ask_delete(){
+    const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovaj skup?\nJednom kad ga nema, ga nema...");
+    if (userChoice) {
+        var send_thing = 'func=delete_collection&&collection=' + original_name;
+        console.log(send_thing);
+        try {
+            const response = await fetch('/libs/collections.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: send_thing
+            });
+            console.log(response);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
+            }
+            alert('Delete successful!');
+            window.location = '/update/';
+
+        } catch (error) {
+            alert('Error during DELETE request:', error);
+        }
+    }
 }
 //When page loaded...
 window.addEventListener('load', function() {

@@ -1,6 +1,6 @@
 AuthType Basic
 AuthName "Only for Admin"
-AuthUserFile /path/to/.htpasswd
+AuthUserFile /var/www/html/update/.htpasswd
 Require valid-user
 
 RewriteEngine On
