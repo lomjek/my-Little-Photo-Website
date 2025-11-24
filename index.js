@@ -1,3 +1,9 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
 async function get_IOD() {
     var iod_link = document.getElementById('iod_link');
     var iod_img = document.getElementById('iod_img');
@@ -18,6 +24,10 @@ async function get_IOD() {
         iod_link.onclick = function() {
             window.location.assign(receivedString);
         };
+        iod_img.onclick = function() {
+            window.location.assign(receivedString);
+        };
+        
         iod_img.src = receivedString;
         
     } catch (error) {
