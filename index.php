@@ -6,8 +6,6 @@
 /*****************************************************/
 
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/libs/iod.php';
-$order = get_collections();
 ?>
 
 <!DOCTYPE html>
@@ -30,15 +28,14 @@ $order = get_collections();
 		<div>
 			<h3 style="float: right;" id="iod_link">Otvori u Skupu =></h3>
             <h3 id="iod_description">Ovdje ćete svaki dan vidjeti drugu sliku, koja je slika dana. Ovdje pronađite zanimljive slike koje inače ne biste vidjeli. Ove slike odabira programm, a može se tjekom dana isto promjeniti, ako se dodava slike ovoga dana. Uživajte!</h3>
-			<img src="<?php echo get_iod(); ?>" id="iod_img" alt="The Image of the Day could not be loaded.">
+			<img id="iod_img" alt="The Image of the Day could not be loaded.">
 		</div>
         <hr>
         <h2 id="onama">O nama:</h2>
         <h3><?php echo get_about_us(); ?></h3>
         <hr>
 		<h2 id="skupovi">Skupovi slika:</h2>
-		<div>
-			<?php display_collections($order); ?>
+		<div id="collection_container">
 		</div>
         
         <hr>

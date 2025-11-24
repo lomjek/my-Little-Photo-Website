@@ -4,27 +4,22 @@
 /* https://github.com/lomjek/my-Little-Photo-Website */
 /*****************************************************/
 
-@font-face {
-	font-family: Nirmala;
-	src: url(Nirmala.ttc);
-}
-
 h1 {
 	text-align: center;
 	color: #333;
 	font-size: clamp(1rem, 20vw, 5rem);
-	font-family: Nirmala;
+	font-family: 'Dejavu Serif', Serif-serif;
 }
 h2 {
 	font-size: clamp(0.4rem, 10vw, 3rem);
 	color: #333;
-	font-family: Nirmala;
+	font-family: 'Dejavu Serif', Serif-serif;
 	clear: both;
 }
 h3 {
 	font-size: clamp(0.3rem, 5vw, 2rem);
 	color: #333;
-	font-family: Nirmala;
+	font-family: 'Dejavu Serif', Serif-serif;
 	clear: both;
 }
 hr {
@@ -33,10 +28,10 @@ hr {
 	clear: both;
 }
 p {
-	font-family: Nirmala;
+	font-family: 'Dejavu Serif', Serif-serif;
 }
 footer{
-	font-family: Nirmala;
+	font-family: 'Dejavu Serif', Serif-serif;
 }
 
 body {
@@ -67,7 +62,7 @@ td{
 #open_update{
 	text-align: right;
 }
-#iod{
+#iod_img{
 	width: 50%;
 }
 #iod_d{
