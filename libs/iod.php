@@ -75,5 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_S
     header('Content-Type: application/x-www-form-urlencoded');
     echo $urlencoded_data;
     exit();
+} elseif (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])){
+    echo "This file cannot be run directly.";
+    exit();
 }
 ?>
