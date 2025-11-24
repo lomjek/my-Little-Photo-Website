@@ -52,20 +52,26 @@ function get_image_count($path){
 	return $count;
 }
 
+function display_update_collections($order){
+	foreach ($order as $collection){
+		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
+		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
+		echo '<table class="collections_content" style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
+		echo '<td onclick="window.location=\'/update/collection/edit/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
+		echo '<td onclick="move(true, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↑</h3></td>';
+		echo '<td onclick="move(false, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↓</h3></td>';
+		echo '</table>';
+	}
+}
+
 function display_collections($order, $update = false){
 	foreach ($order as $collection){
 		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
-		echo '<table  style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
-		if ($update){
-			echo '<td onclick="window.location=\'/update/collection/edit/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
-			echo '<td onclick="move(true, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↑</h3></td>';
-			echo '<td onclick="move(false, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↓</h3></td>';
-		} else {
-			echo '<td onclick="window.location=\'/photos/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
-			echo '<td><h3 style="text-align: right; color: ' . $colors[1] . '; float: right;">' . get_image_count($path) . ' Slika</h3></td>';
-		}
-		echo '</table>';
+		echo '<div onclick="window.location=\'/photos/' . $collection . '\';" class="collections_content" style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
+		echo '<h2 class="collections_title" style="color:' . $colors[1] . ';">' . str_replace("-", " ", $collection) . '</h2>';
+		echo '<h3 class="collections_img_count" style="color: ' . $colors[1] . ';">' . get_image_count($path) . ' Slika</h3>';
+		echo '</div>';
 	}
 }
 
