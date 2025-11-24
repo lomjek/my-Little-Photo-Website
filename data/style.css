@@ -44,14 +44,3 @@ body {
 td{
 	width: 25%;
 }
-
-.thumbnail_right {
-	float: right;
-	width: 48%;
-	padding: 1%;
-}
-.thumbnail_left {
-	float: left;
-	padding: 1%;
-	width: 48%;
-}
