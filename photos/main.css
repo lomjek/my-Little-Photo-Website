@@ -1,0 +1,44 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
+#Title {
+    font-size: clamp(1rem, 10vw, 7rem);
+}
+.Home {
+    text-align: left;
+    cursor: pointer;
+    font-size: clamp(0.7rem, 3vw, 1.5rem);
+}
+#desc {
+    text-align: center;
+    font-size: clamp(0.8rem, 5vw, 2rem);
+    margin-bottom: 2vh;
+}
+
+#image_container {
+    display: grid;
+    place-items: center;
+    gap: 1vh 1vw;
+}
+.imgs {
+    max-width: 100%;
+}
+
+@media (min-width: 600px) {
+    #image_container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 900px) {
+    #image_container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (min-width: 1200px) {
+    #image_container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

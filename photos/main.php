@@ -36,31 +36,30 @@ $files = array_values($files);
 <html>
     <head>
         <title><?php echo $name ?></title>
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+        
         <link rel="stylesheet" href="/data/style.css">
+        <link rel="stylesheet" href="main.css">
     </head>
     <body style="background-color: <?php echo $colors[0]; ?>;">
-        <h1 style="color: <?php echo $colors[1];?>;"><?php echo $name; ?></h1>
-        <h3 style="color: <?php echo $colors[1];?>;" onclick="window.location.assign('/')"><= Nazad na glavnu stranu</h3>
-        <?php if ($desc) { echo '<h2 style="color: ' . $colors[1] . '; text-align: center;">' . $desc . '</h2>'; } ?>
+        <h1 id="Title" style="color: <?php echo $colors[1];?>;"><?php echo $name; ?></h1>
+        <h3 class="Home" style="color: <?php echo $colors[1];?>;" onclick="window.location.assign('/')"><- Na glavnu stranicu</h3>
+        <?php if ($desc) { echo '<h2 id="desc" style="color: ' . $colors[1] . ';">' . $desc . '</h2>'; } ?>
         <hr style="background-color: <?php echo $colors[1];?>;">
-        <div>
+        
+        <div id="image_container">
         <?php
-            $index = 0;
             foreach ($files as $image){
                 echo "<a href=/photo/" . $current . "/" . $image . ">";
-                if ($index % 2 == 0) {
-                    echo "<img src='/photos/" . $current . "/.t_" . $image . "' class='thumbnail_left'>";
-                } else {
-                    echo "<img src='/photos/" . $current . "/.t_" . $image . "' class='thumbnail_right'>";
-                }
-                $index += 1;
+                echo "<img class='imgs' src='/photos/" . $current . "/.t_" . $image . "'>";
                 echo "</a>";
             }    
         ?>
         </div>
+        
         <hr style="background-color: <?php echo $colors[1];?>;">
-        <h3 style="color: <?php echo $colors[1];?>;" onclick="window.location.assign('/')"><= Nazad na glavnu stranu</h3>
+        <h3 class="Home" style="color: <?php echo $colors[1];?>;" onclick="window.location.assign('/')"><- Na glavnu stranicu</h3>
     </body>
 </html>
