@@ -7,7 +7,7 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
-$order = get_collections();
+$order = get_collections(true);
 ?>
 <!DOCTYPE html>
 <html lang="hr">
