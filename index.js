@@ -42,7 +42,11 @@ async function get_collections() {
     }
     try {
         fetch('libs/collections.php', {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(data).toString()
         })
         .then(response => {
             if (!response.ok) {

@@ -87,7 +87,6 @@ function display_collections($order){
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
-	print_r($_POST);
 	if($_POST['func'] == 'display_collections'){
 		$order = get_collections();
 		display_collections($order);
