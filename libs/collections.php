@@ -5,6 +5,17 @@
 /* https://github.com/lomjek/my-Little-Photo-Website */
 /*****************************************************/
 
+function delete_collection($collection){
+	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
+	$files = scandir($path);
+	foreach ($files as $file) {
+		if ($file !== '.' && $file !== '..') {
+			unlink($path . '/' . $file);
+		}
+	}
+	rmdir($path);
+}
+
 function get_collections(){
 	$folders = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos'); //Get all items from the photos folder.
 	$folders = array_diff($folders, ['.', '..']); //Remove . and ..
@@ -64,7 +75,7 @@ function display_update_collections($order){
 	}
 }
 
-function display_collections($order, $update = false){
+function display_collections($order){
 	foreach ($order as $collection){
 		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
@@ -76,17 +87,25 @@ function display_collections($order, $update = false){
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
-    $in_update = isset($_POST['update']) ? boolval($_POST['update']) : false;
-    $message_string = display_collections(get_collections(), $in_update);
-    
-    $data_array = [
-        'data' => $message_string
-    ];
+	print_r($_POST);
+	if($_POST['func'] == 'display_collections'){
+		$order = get_collections();
+		display_collections($order);
+	} else if ($_POST['func'] == 'delete_collection'){
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/photos/' . $_POST['collection'])){
+			delete_collection($_POST['collection']);
+			http_response_code(200);
+			echo 'Collection deleted successfully: ' . htmlspecialchars($_POST['collection']);
 
-    $urlencoded_data = http_build_query($data_array);
-    header('Content-Type: application/x-www-form-urlencoded');
-    echo $urlencoded_data;
-    exit();
+		} else {
+			http_response_code(404);
+			echo 'Not Found: Collection does not exist: ' . htmlspecialchars($_POST['collection']);
+			
+		}
+	} else {
+		http_response_code(400);
+		echo 'Bad Request: Unknown function: ' . htmlspecialchars($_POST['func']);
+	}
     
 } elseif (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])){
     echo "This file cannot be run directly.";

@@ -37,7 +37,9 @@ async function get_IOD() {
 
 async function get_collections() {
     var collection_container = document.getElementById('collection_container');
-
+    data = {
+        'func': 'display_collections'
+    }
     try {
         fetch('libs/collections.php', {
             method: 'POST'
