@@ -4,7 +4,6 @@ RewriteBase /photos/
 
 # Avoid rewriting for the main.php file itself
 RewriteCond %{REQUEST_URI} !^/photos/main.php$
-RewriteCond %{REQUEST_URI} !^/photos/main.css$
 
 # Internal rewrite without changing the URL
 RewriteRule ^([^/]+)/?$ main.php?c=$1 [L,QSA]

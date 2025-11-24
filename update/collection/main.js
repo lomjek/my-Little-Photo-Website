@@ -5,46 +5,41 @@
 /*****************************************************/
 
 function change_bg_color(){
-    let color = document.getElementById("bcolor").value;
-    document.body.style.setProperty("background-color", color, "important");
-    document.getElementById('Title').style.setProperty("background-color", color, "important");
-    document.getElementById('desc').style.setProperty("background-color", color, "important");
-    document.getElementById('desc').style.setProperty("background-color", color, "important");
-    document.getElementById('add').style.setProperty("background-color", color, "important");
+    const allBodyElements = document.body.querySelectorAll('*');
+    allBodyElements.forEach(element => {
+        element.style.setProperty("background-color", document.getElementById("bcolor").value, "important");
+    });
+    document.body.style.setProperty("background-color", document.getElementById("bcolor").value, "important");
 }
 function change_t_col(){
-    let color = document.getElementById("tcolor").value;
-    document.getElementById('Title').style.setProperty("color", color, "important");
-    document.getElementById('leave').style.setProperty("color", color, "important");
-    document.getElementById('desc').style.setProperty("color", color, "important");
-    document.getElementById('desc').style.setProperty("color", color, "important");
-    document.getElementById('add').style.setProperty("color", color, "important");
+    const allBodyElements = document.body.querySelectorAll('*');
+    allBodyElements.forEach(element => {
+        element.style.setProperty("color", document.getElementById("tcolor").value, "important");
+    });
 }
 
 //input
 function leave(){
-    fetch('main.php', {method: 'DELETE'})
-    .then(response => {
-        if (!response.ok) {
-            alert("Cleanup didn't work: " + response.status + "\nYou shouldn't encounter any issues, but you should inform me.");
-        }
-        window.location.assign('/update/');
-    })
+    window.location.assign('/update/');
 }
-async function sendRequest(formData){
-    fetch('main.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: formData
-    })
-    .then(response => {
+async function sendRequest(urlencoded_data){
+    try {
+        const response = await fetch('/libs/collections.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: urlencoded_data
+        })
+        console.log(response);
         if (!response.ok) {
-            alert("There was an error. There shouldn't be any interferences.\nError code: " + response.status);
-            return false;
-        } else {
-            return true;
+            const errorText = await response.text();
+            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
         }
-    })
+        console.log(await response.text());
+        return true;
+    } catch (error) {
+        alert('Error during request: ' + error);
+        return false;
+    }
 }
 function rename(){
     const formData = new URLSearchParams();
@@ -56,53 +51,24 @@ function rename(){
     }
 }
 function save_description(){
-    const formData = new URLSearchParams();
-    formData.append('a', 'description');
-    formData.append('c', original_name);
-    formData.append('d', document.getElementById('desc').value);
+    const formData = 'func=set_collection_description&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&description=' + encodeURIComponent(document.getElementById('desc').value);
     sendRequest(formData);
 }
 function save_colors(){
-    const formData = new URLSearchParams();
-    formData.append('a', 'colors');
-    formData.append('c', original_name);
     let colors = [document.getElementById('bcolor').value, document.getElementById('tcolor').value];
-    formData.append('d', colors.join('\n'));
+    let formData = 'func=set_collection_colors&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&bg_color=' + encodeURIComponent(colors[0]) + '&&text_color=' + encodeURIComponent(colors[1]);
     sendRequest(formData);
 }
-function publish(){
-    const formData = new URLSearchParams();
-    formData.append('a', 'publish');
-    formData.append('c', original_name);
-    if (sendRequest(formData)){
-        window.location = '/update/collection/edit/' + original_name.replace(' ', '-');
-    }
+function set_visibility(){
+    const formData = 'func=set_collection_visibility&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&visibility=' + encodeURIComponent(document.getElementById('visibility').value);
+    sendRequest(formData)
 }
-
 async function ask_delete(){
     const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovaj skup?\nJednom kad ga nema, ga nema...");
-    if (userChoice) {
-        var send_thing = 'func=delete_collection&&collection=' + original_name;
-        console.log(send_thing);
-        try {
-            const response = await fetch('/libs/collections.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: send_thing
-            });
-            console.log(response);
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
-            }
-            alert('Delete successful!');
-            window.location = '/update/';
-
-        } catch (error) {
-            alert('Error during DELETE request:', error);
-        }
+    var send_thing = 'func=delete_collection&&collection=' + original_name.replaceAll(" ", "-");
+    console.log(send_thing);
+    if (sendRequest(send_thing)){
+        window.location = '/update/';
     }
 }
 //When page loaded...
