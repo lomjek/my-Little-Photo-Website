@@ -34,7 +34,7 @@ select {
 	font-size: clamp(0.7rem, 3vw, 1.5rem);
 }
 
-button {
+#delete_collection {
 	text-align: center;
 	font-size: clamp(1rem, 20vw, 5rem);
 	width: 100%;
@@ -43,4 +43,38 @@ button {
 h3 {
 	font-size: clamp(0.3rem, 5vw, 2rem);
 	clear: both;
+}
+
+#image_container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(500px, 4fr));
+}
+
+.imgParent {
+	margin-bottom: 10px;
+	flex-direction: column;
+}
+
+.imgNameLabel {
+	font-size: clamp(0.5rem, 3vw, 1.5rem);
+	margin-bottom: 5px;
+	width: 100%;
+}
+
+.imgElement {
+	width: 100%;
+	height: auto;
+}
+
+.imgCaption {
+	margin-top: 10px;
+	width: 100%;
+	font-size: clamp(0.5rem, 3vw, 1.5rem);
+	resize: vertical;
+}
+
+.imgDeleteButton {
+	font-size: clamp(0.5rem, 3vw, 1.5rem);
+	margin-top: 5px;
+	width: 100%;
 }

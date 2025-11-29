@@ -44,16 +44,25 @@ function needs_reload()
     $file_contents = file_get_contents($reload_file);
     $line = explode("\n", $file_contents)[0];
     if (trim($line) == date("Ymd")) {
-        return false;
+        if (file_exists(get_iod_from_file())) {
+            return false;
+        } else {
+            return true;
+        }
     } else {
         return true;
     }
 }
 
-function override_iod()
+function override_iod($path = "")
 {
     $reload_file = $_SERVER['DOCUMENT_ROOT'] . '/data/iod.conf';
-    file_put_contents($reload_file, date("Ymd") . "\n" . get_rand_img_path(false));
+    if ($path != "") {
+        $rand_img_path = $path;
+    } else {
+        $rand_img_path = get_rand_img_path();
+    }
+    file_put_contents($reload_file, date("Ymd") . PHP_EOL . $rand_img_path);
 }
 
 function get_iod_from_file()
@@ -68,7 +77,7 @@ function get_iod()
 {
     if (needs_reload()) {
         override_iod();
-        return get_iod();
+        return get_iod_from_file();
     } else {
         return get_iod_from_file();
     }
@@ -83,7 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_S
     header('Content-Type: application/x-www-form-urlencoded');
     echo $urlencoded_data;
     exit();
-} elseif (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
-    echo "This file cannot be run directly.";
-    exit();
+} else {
+    http_response_code(405);
 }

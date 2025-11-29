@@ -6,7 +6,8 @@
 /* https://github.com/lomjek/my-Little-Photo-Website */
 /*****************************************************/
 
-function delete_collection($collection){
+function delete_collection($collection)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 	$files = scandir($path);
 	foreach ($files as $file) {
@@ -17,7 +18,8 @@ function delete_collection($collection){
 	rmdir($path);
 }
 
-function get_collection_colors($collection){
+function get_collection_colors($collection)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.c_';
 	if (file_exists($path)) {
 		$colors = explode(PHP_EOL, file_get_contents($path));
@@ -26,13 +28,15 @@ function get_collection_colors($collection){
 		return ['#aaa', '#333'];
 	}
 }
-function set_collection_colors($collection, $bg_color, $text_color){
+function set_collection_colors($collection, $bg_color, $text_color)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.c_';
 	$content = $bg_color . PHP_EOL . $text_color;
 	file_put_contents($path, $content);
 }
 
-function get_collection_description($collection){
+function get_collection_description($collection)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.d_';
 	if (file_exists($path)) {
 		return file_get_contents($path);
@@ -40,15 +44,17 @@ function get_collection_description($collection){
 		return "";
 	}
 }
-function set_collection_description($collection, $description){
+function set_collection_description($collection, $description)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.d_';
-	if (!file_exists($path)){
+	if (!file_exists($path)) {
 		touch($path);
 	}
 	file_put_contents($path, $description);
 }
 
-function get_collection_visibility($collection){
+function get_collection_visibility($collection)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 	if (file_exists($path . '/.u_')) {
 		return 'unlisted';
@@ -58,7 +64,8 @@ function get_collection_visibility($collection){
 		return 'public';
 	}
 }
-function set_collection_visibility($collection, $visibility){
+function set_collection_visibility($collection, $visibility)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 	if ($visibility == 'public') {
 		if (file_exists($path . '/.u_')) {
@@ -81,9 +88,10 @@ function set_collection_visibility($collection, $visibility){
 	}
 }
 
-function create_collection($name){
+function create_collection($name)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $name;
-	if (mkdir($path)){
+	if (mkdir($path)) {
 		file_put_contents($path . '/.c_', "#aaaaaa\n#333333");
 		set_collection_visibility($name, 'private');
 		return true;
@@ -92,12 +100,25 @@ function create_collection($name){
 	}
 }
 
-function collection_exists($name){
+function rename_collection($old_name, $new_name)
+{
+	$old_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $old_name;
+	$new_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $new_name;
+	if (rename($old_path, $new_path)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function collection_exists($name)
+{
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $name;
 	return file_exists($path) && is_dir($path);
 }
 
-function get_collections($all=false){
+function get_collections($all = false)
+{
 	$folders = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos'); //Get all items from the photos folder.
 	$folders = array_diff($folders, ['.', '..']); //Remove . and ..
 
@@ -132,7 +153,8 @@ function get_collections($all=false){
 	return $order; //return order
 }
 
-function get_image_count($path) {
+function get_image_count($path)
+{
 	$images = scandir($path); //Get all items from the path
 	$count = 0;
 	foreach ($images as $image) {
@@ -145,7 +167,8 @@ function get_image_count($path) {
 	return $count;
 }
 
-function display_update_collections($order) {
+function display_update_collections($order)
+{
 	foreach ($order as $collection) {
 		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
@@ -157,7 +180,8 @@ function display_update_collections($order) {
 	}
 }
 
-function display_collections($order) {
+function display_collections($order)
+{
 	foreach ($order as $collection) {
 		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
 		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
@@ -169,13 +193,26 @@ function display_collections($order) {
 }
 
 // FUNCTION CALLS FOR ACCESS VIA AJAX/POST
-if (!(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) || !($_SERVER['REQUEST_METHOD'] === 'POST')) {	
+if (!(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) || !($_SERVER['REQUEST_METHOD'] === 'POST')) {
 	return;
 }
 
 if ($_POST['func'] == 'display_collections') {
 	$order = get_collections();
 	display_collections($order);
+} elseif ($_POST['func'] == 'get_collections') {
+	$order = get_collections();
+	echo json_encode($order);
+} else if ($_POST['func'] == 'rename_collection') {
+	if (isset($_POST['old_name']) && isset($_POST['new_name'])) {
+		if (rename_collection($_POST['old_name'], $_POST['new_name'])) {
+			http_response_code(200);
+		} else {
+			http_response_code(500);
+		}
+	} else {
+		http_response_code(422);
+	}
 } else if ($_POST['func'] == 'delete_collection') {
 	if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/photos/' . $_POST['collection'])) {
 		delete_collection($_POST['collection']);

@@ -7,7 +7,7 @@
 async function get_IOD() { //photo
     var iod_link = document.getElementById('iod_link');
     var iod_img = document.getElementById('iod_img');
-
+    console.log("Fetching IOD...");
     try {
         const response = await fetch('libs/iod.php', {
             method: 'POST'
@@ -20,10 +20,9 @@ async function get_IOD() { //photo
         const urlEncodedString = await response.text();
         const params = new URLSearchParams(urlEncodedString);
         const receivedString = params.get('data');
-
+        console.log("Received IOD: " + receivedString);
         var iod_array = receivedString.split('/');
         iod_array[0] = iod_array[0].slice(0, -1)
-        iod_array[2] = ".t_" + iod_array[2];
         let iod_url = iod_array.join("/");
 
         iod_link.onclick = function () {
