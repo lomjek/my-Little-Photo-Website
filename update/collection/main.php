@@ -9,6 +9,9 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
 
+$title = 'Ažuriranje Skupa';
+$name = '';
+$colors = ['#aaaaaa', '#333333'];
 if ($_GET['a'] === 'edit') {
     $path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $_GET['c'];
     if (file_exists($path)) {
@@ -57,7 +60,7 @@ if ($_GET['a'] === 'edit') {
 
             <div style="margin-bottom: 20px;"></div>
 
-            <textarea id="desc" type="text" rows="4" placeholder="Opišite ovdje, što sadrži vaš skup..." onblur="save_description()"></textarea>
+            <textarea id="desc" type="text" rows="4" placeholder="Opišite ovdje, što sadrži vaš skup..." onblur="save_description()"><?php echo get_collection_description($title) ?></textarea>
 
             <div style="margin-bottom: 20px;">
                 <label for="bcolor">Promjeni boju ozadine:</label>
@@ -81,11 +84,13 @@ if ($_GET['a'] === 'edit') {
 
             <div style="margin-bottom: 20px;"></div>
 
-            <button id='delete' onclick="ask_delete()">Izbriši Skup</button>
+            <button id='delete_collection' onclick="ask_delete()">Izbriši Skup</button>
+            <div id="image_section">
+                <h2>Slike u skupu:</h2>
+                <div id="image_container">
+
+                </div>
+            </div>
 </body>
-<script>
-    change_bg_color();
-    change_t_col();
-</script>
 
 </html>
