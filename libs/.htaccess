@@ -1,0 +1,5 @@
+<LimitExcept POST>
+    Require all denied
+</LimitExcept>
+
+SetEnvIf Request_Method POST NO_ABORT
