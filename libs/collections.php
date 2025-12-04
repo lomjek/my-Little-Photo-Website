@@ -193,7 +193,7 @@ function display_collections($order)
 }
 
 // FUNCTION CALLS FOR ACCESS VIA AJAX/POST
-if (!(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) || !($_SERVER['REQUEST_METHOD'] === 'POST')) {
+if (realpath(__FILE__) != realpath($_SERVER['SCRIPT_FILENAME'])) {
 	return;
 }
 
@@ -257,6 +257,6 @@ if ($_POST['func'] == 'display_collections') {
 		http_response_code(422);
 	}
 } else {
-	http_response_code(400);
+	http_response_code(422);
 	echo 'Bad Request: Unknown function: ' . htmlspecialchars($_POST['func']);
 }

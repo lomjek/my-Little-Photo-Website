@@ -83,7 +83,7 @@ function get_iod()
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
+if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
     $message_string = get_iod();
     $data_array = [
         'data' => $message_string
@@ -93,5 +93,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && realpath(__FILE__) === realpath($_S
     echo $urlencoded_data;
     exit();
 } else {
-    http_response_code(405);
+    http_response_code(422);
 }
