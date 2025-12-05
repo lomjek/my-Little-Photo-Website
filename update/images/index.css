@@ -1,0 +1,31 @@
+/*****************************************************/
+/*  This file is part of 'my Little Photo Website'   */
+/* It is published on github under the MIT License:  */
+/* https://github.com/lomjek/my-Little-Photo-Website */
+/*****************************************************/
+
+button {
+    width: 100%;
+    height: clamp(0.7rem, 9vw, 5rem);
+    font-size: clamp(0.5rem, 7vw, 4rem);
+}
+
+#Title {
+    font-size: clamp(1rem, 10vw, 7rem);
+}
+
+#leave {
+    font-size: clamp(0.7rem, 3vw, 1.5rem);
+}
+
+#skupovi {
+    height: clamp(0.7rem, 9vw, 5rem);
+    font-size: clamp(0.5rem, 7vw, 4rem);
+    margin: 10px;
+}
+
+#files {
+    height: clamp(0.7rem, 9vw, 5rem);
+    font-size: clamp(0.5rem, 7vw, 4rem);
+    margin: 10px;
+}

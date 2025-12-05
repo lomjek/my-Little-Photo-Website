@@ -8,18 +8,24 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/iod.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 
 #region Image Functions
-function delete_image($collection, $image)
+function delete_image(string $collection, string $image): bool
 {
     $path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/' . $image;
     $thumbnail_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.t_' . $image;
+    if (!collection_exists($collection)) {
+        echo "CnF: " . $collection;
+        return false;
+    }
     if (file_exists($path)) {
         unlink($path);
     }
     if (file_exists($thumbnail_path)) {
         unlink($thumbnail_path);
     }
+    return true;
 }
 function image_exists($collection, $image)
 {
@@ -57,13 +63,12 @@ function rename_image($collection, $image, $new_image_name)
     if (file_exists($image_path)) {
         rename($image_path, $new_image_path);
     } else {
-        return;
+        return false;
     }
     if (file_exists($thumbnail_path)) {
         rename($thumbnail_path, $new_thumbnail_path);
     } else {
-        //Generate thumbnail if it does not exist
-        return;
+        generate_thumbnail($collection, $new_image_name);
     }
     if (file_exists($description_path)) {
         rename($description_path, $new_description_path);
@@ -73,6 +78,7 @@ function rename_image($collection, $image, $new_image_name)
     if ($iod_image == $image_path) {
         override_iod($new_image_path);
     }
+    return true;
 }
 
 #endregion
@@ -106,7 +112,7 @@ function get_images_in_collection_for_update($collection)
 }
 #endregion
 #region Image Processing
-function get_img_width($path)
+function get_img_width($path): int
 {
     $img_size = getimagesize($path);
     if ($img_size == false) {
@@ -130,21 +136,60 @@ function generate_thumbnail($collection, $image)
     exec($command, $output, $exit_status);
     return true;
 }
-function process_image($path, $collection, $image)
+function process_image($in_path, $out_path)
 {
     echo "Function running" . PHP_EOL;
-    if (!file_exists($path)) {
-        echo "FnF: " . $path . PHP_EOL;
+    if (!file_exists($in_path)) {
+        echo "FnF: " . $in_path . PHP_EOL;
         return false;
     }
-    if (!collection_exists($collection)) {
-        echo "CnF: " . $collection . PHP_EOL;
+    if (file_exists($out_path)) {
+        echo "FiE: " . $out_path . PHP_EOL;
         return false;
     }
 
-    $final_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/' . $image;
-    $command = "ffmpeg -i " .  $path . " -c:v libwebp -q:v 95 " . $final_path;
+    $command = "ffmpeg -i " .  $in_path . " -c:v libwebp -q:v 95 " . $out_path;
     print($command . PHP_EOL);
+    $result = null;
+    exec($command, $ouput, $result);
+
+    echo $ouput . PHP_EOL;
+
+    if ($result === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function generate_valid_target_path($collection, $filename)
+{
+    $target_path = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . $collection . "/" . $filename . ".webp";
+    $count = 1;
+    while (file_exists($target_path)) {
+        $target_path = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . $collection . "/" . $filename . "_" . $count . ".webp";
+        $count++;
+    }
+    return $target_path;
+}
+function process_images($collection, $paths)
+{
+    echo "process_images" . PHP_EOL;
+    if (!collection_exists($collection)) {
+        echo "Cannot write into inexistent collection..." . PHP_EOL;
+        return false;
+    }
+
+    foreach ($paths as $path) {
+        if (!file_exists($path)) {
+            echo "File " . $path . " that was supposed to exist on the server is nowhere to be found..." . PHP_EOL;
+            continue;
+        }
+        $target_path = generate_valid_target_path($collection, pathinfo($path)['filename']);
+
+        process_image($path, $target_path);
+        generate_thumbnail($collection, basename($target_path));
+        rmd($_SERVER['DOCUMENT_ROOT'] . "/update/images/uploads/");
+    }
 }
 #region API
 if (realpath(__FILE__) != realpath($_SERVER['SCRIPT_FILENAME'])) {
@@ -187,20 +232,29 @@ if ($_POST['func'] == 'get_images_in_collection') {
     } else {
         http_response_code(400);
     }
-} elseif ($_POST['func'] == "generate_thumbnail") {
+} elseif ($_POST['func'] == 'delete_image') {
     $collection = $_POST['collection'];
     $image = $_POST['image'];
-    generate_thumbnail($collection, $image);
-} elseif ($_POST['func'] == "process_image") {
-    $collection = $_POST['collection'];
-    $image = $_POST['image'];
-    $path = $_POST['path'];
-    if ($collection != null && $image != null && $path != null) {
-        process_image($path, $collection, $image);
+    if ($collection != null && $image != null) {
+        delete_image($collection, $image);
         http_response_code(200);
     } else {
         http_response_code(400);
     }
+} elseif ($_POST['func'] == "generate_thumbnail") {
+    $collection = $_POST['collection'];
+    $image = $_POST['image'];
+    generate_thumbnail($collection, $image);
+} elseif ($_POST['func'] == 'process_images') {
+    $collection = str_replace(" ", "-", $_POST['collection']);
+    $paths = explode(",", $_POST['paths']);
+    if ($collection != null && $paths != null) {
+        process_images($collection, $paths);
+        http_response_code(200);
+    } else {
+        http_response_code(400);
+    }
+    exit;
 } else {
     http_response_code(422);
     echo 'Bad Request: Unknown function: ' . htmlspecialchars($_POST['func']);
