@@ -35,7 +35,7 @@ function Upload() {
     xhr.onload = function () {
         if (xhr.status === 200 || xhr.status == 202 || xhr.status == 201) {
             console.log(xhr.responseText)
-            //processImages(xhr.responseText)
+            processImages(xhr.responseText)
         } else {
             console.error('Error:', xhr.statusText);
             alert('Error uploading files.');
@@ -45,4 +45,40 @@ function Upload() {
     document.getElementById("Upload").style.display = 'none';
     document.getElementById('uploading').style.display = 'block';
     xhr.send(formData);
+}
+function processImages(json_string) {
+    const paths = JSON.parse(json_string).results
+        .filter(item => item.message === "success")
+        .map(item => item.path);
+
+    console.log(paths)
+
+    let path_string = paths.join(",")
+    let Data = 'func=process_images'
+    Data += '&&collection=' + encodeURIComponent(document.getElementById("skupovi").value.replace(/ /g, '-'));
+    Data += '&&paths=' + encodeURIComponent(path_string.replace(/ /g, '-'));
+
+    fetch('/libs/images.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: Data
+    }).then(response => {
+        if (response.ok) {
+            return response.text().then(text => {
+                console.log(text);
+                alert("Images Uploaded succesfully");
+                window.location.reload();
+            });
+        } else {
+            console.error('Error:', response.statusText, 'Status:', response.status);
+            alert('Error uploading files. Try again');
+            window.location.reload();
+        }
+    }).catch(error => {
+        console.error('Network Error:', error);
+        alert('Error uploading files. Try again');
+        window.location.reload();
+    });
 }

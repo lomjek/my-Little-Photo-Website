@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $file_tmp_path = $file_array['tmp_name'][$i];
-        $target_path = $upload_dir . $file_array['full_path'][$i];
+        $target_path = $upload_dir . str_replace(" ", "-", $file_array['full_path'][$i]);
 
         if (move_uploaded_file($file_tmp_path, $target_path)) {
             $message = 'success';

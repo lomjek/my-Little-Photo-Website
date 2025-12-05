@@ -83,7 +83,7 @@ async function ask_delete() {
 function delete_image_from_collection(image_name) {
     const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovu sliku iz skupa?");
     if (userChoice) {
-        let formData = 'func=delete_image_from_collection';
+        let formData = 'func=delete_image';
         formData += '&& collection=' + encodeURIComponent(original_name.replaceAll(" ", "-"));
         formData += '&&image=' + encodeURIComponent(image_name);
 
