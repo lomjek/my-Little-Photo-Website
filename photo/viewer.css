@@ -9,6 +9,19 @@ body {
     padding: 0;
     background-color: #000;
 }
+
+#toolbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    background-color: #000000aa;
+}
+
+.tool {
+    height: clamp(7vh, 10vw, 6rem);
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -21,15 +34,25 @@ body {
 .container img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* Ensures the image scales correctly */
+    object-fit: contain;
 }
+
 #img {
     pointer-events: none;
 }
 
-#back {
+#description {
     position: fixed;
-    height: 8%;
-    top: 0;
-    left: 0;
+    font-size: clamp(1rem, 3vw, 1.75rem);
+    display: none;
+
+    color: #aaa;
+    background-color: #000000aa;
+
+    margin-bottom: 0;
+    bottom: 0;
+
+    margin-top: 20px;
+    border: 10px solid transparent;
+
 }
