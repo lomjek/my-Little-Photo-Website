@@ -6,18 +6,7 @@
 /* https://github.com/lomjek/my-Little-Photo-Website */
 /*****************************************************/
 
-function delete_collection($collection)
-{
-	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
-	$files = scandir($path);
-	foreach ($files as $file) {
-		if ($file !== '.' && $file !== '..') {
-			unlink($path . '/' . $file);
-		}
-	}
-	rmdir($path);
-}
-
+#region Getters/Setters
 function get_collection_colors($collection)
 {
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.c_';
@@ -53,13 +42,13 @@ function set_collection_description($collection, $description)
 	file_put_contents($path, $description);
 }
 
-function get_collection_visibility($collection)
+function get_collection_visibility(string $collection): string
 {
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
-	if (file_exists($path . '/.u_')) {
-		return 'unlisted';
-	} elseif (file_exists($path . '/.htaccess')) {
+	if (file_exists($path . '/.htaccess')) {
 		return 'private';
+	} elseif (file_exists($path . '/.u_')) {
+		return 'unlisted';
 	} else {
 		return 'public';
 	}
@@ -88,6 +77,78 @@ function set_collection_visibility($collection, $visibility)
 	}
 }
 
+function collection_exists($name)
+{
+	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $name;
+	return file_exists($path) && is_dir($path);
+}
+
+function get_image_count($path)
+{
+	$images = scandir($path);
+	$count = 0;
+	foreach ($images as $image) {
+		if (str_ends_with(strtolower($image), ".webp")) {
+			if (str_starts_with(strtolower($image), ".t_")) {
+				$count += 1;
+			}
+		}
+	}
+	return $count;
+}
+#endregion
+#region ORDER
+function change_collection_priority(string $collection, bool $up): bool
+{
+	$order = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/photos/order.csv");
+	$order = explode(", ", $order);
+
+	if (!in_array($collection, $order)) {
+		return false;
+	}
+
+	if ($collection == $order[0] && $up) {
+		return false;
+	} elseif ($collection == $order[-1] && !$up) {
+		return false;
+	}
+
+	$index = array_search($collection, $order);
+	var_dump($index);
+	var_dump($up);
+	var_dump($order);
+
+	if (is_int($index)) {
+		if ($up) {
+			$temp = $order[$index];
+			$order[$index] = $order[$index - 1];
+			$order[$index - 1] = $temp;
+		} else {
+			$temp = $order[$index];
+			$order[$index] = $order[$index + 1];
+			$order[$index + 1] = $temp;
+		}
+	} else {
+		return false;
+	}
+
+	$order = implode(", ", $order);
+	return file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/photos/order.csv", $order);
+}
+#endregion
+#region BIG I/O
+function delete_collection($collection)
+{
+	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
+	$files = scandir($path);
+	foreach ($files as $file) {
+		if ($file !== '.' && $file !== '..') {
+			unlink($path . '/' . $file);
+		}
+	}
+	rmdir($path);
+}
+
 function create_collection($name)
 {
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $name;
@@ -110,22 +171,41 @@ function rename_collection($old_name, $new_name)
 		return false;
 	}
 }
-
-function collection_exists($name)
+#endregion
+#region Parsers
+function get_collections_from_csv(): array
 {
-	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $name;
-	return file_exists($path) && is_dir($path);
+	$file_contents = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/photos/order.csv");
+	return explode(", ", $file_contents);
 }
 
-function get_collections($all = false)
+function get_unlisted_collections(bool $private = false): array
 {
-	$folders = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos'); //Get all items from the photos folder.
-	$folders = array_diff($folders, ['.', '..']); //Remove . and ..
+	$folders = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos');
+	$folders = array_diff($folders, ['.', '..', '.htaccess', 'order.csv', 'main.php']);
+
+	$final = [];
+
+	foreach ($folders as $folder) {
+		if (get_collection_visibility($folder) == 'private' && $private) {
+			$final[] = $folder;
+		} elseif (get_collection_visibility($folder) == 'unlisted' && $private == false) {
+			$final[] = $folder;
+		}
+	}
+
+	return $final;
+}
+
+function get_public_collections(): array
+{
+	$folders = scandir($_SERVER['DOCUMENT_ROOT'] . '/photos');
+	$folders = array_diff($folders, ['.', '..']);
 
 	foreach ($folders as $item) {
 		if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/photos/' . $item)) {
 			$folders = array_diff($folders, [$item]); //For each element, if it is not a dir, remove it from the folders array.
-		} elseif (file_exists($_SERVER['DOCUMENT_ROOT'] . '/photos/' . $item . '/.u_') && !$all) {
+		} elseif (get_collection_visibility($item) != "public") {
 			$folders = array_diff($folders, [$item]);
 		}
 	}
@@ -153,34 +233,7 @@ function get_collections($all = false)
 	return $order; //return order
 }
 
-function get_image_count($path)
-{
-	$images = scandir($path); //Get all items from the path
-	$count = 0;
-	foreach ($images as $image) {
-		if (str_ends_with(strtolower($image), ".webp")) {
-			if (str_starts_with(strtolower($image), ".t_")) {
-				$count += 1;
-			}
-		}
-	}
-	return $count;
-}
-
-function display_update_collections($order)
-{
-	foreach ($order as $collection) {
-		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
-		$colors = explode(PHP_EOL, file_get_contents($path . '/.c_'));
-		echo '<table class="collections_content" style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
-		echo '<td onclick="window.location=\'/update/collection/edit/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
-		echo '<td onclick="move(true, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↑</h3></td>';
-		echo '<td onclick="move(false, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↓</h3></td>';
-		echo '</table>';
-	}
-}
-
-function display_collections($order)
+function display_collections($order): void
 {
 	foreach ($order as $collection) {
 		$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection;
@@ -191,17 +244,17 @@ function display_collections($order)
 		echo '</div>';
 	}
 }
-
-// FUNCTION CALLS FOR ACCESS VIA AJAX/POST
+#endregion
+#region API
 if (realpath(__FILE__) != realpath($_SERVER['SCRIPT_FILENAME'])) {
 	return;
 }
 
 if ($_POST['func'] == 'display_collections') {
-	$order = get_collections();
+	$order = get_public_collections();
 	display_collections($order);
 } elseif ($_POST['func'] == 'get_collections') {
-	$order = get_collections();
+	$order = get_public_collections();
 	echo json_encode($order);
 } else if ($_POST['func'] == 'rename_collection') {
 	if (isset($_POST['old_name']) && isset($_POST['new_name'])) {
@@ -256,7 +309,22 @@ if ($_POST['func'] == 'display_collections') {
 	} else {
 		http_response_code(422);
 	}
+} elseif ($_POST['func'] == 'change_collection_priority') {
+	$collection = $_POST['collection'];
+	$up = $_POST['up'];
+	if (strtolower($up) == "true") {
+		$up = true;
+	} elseif (strtolower($up) == "false") {
+		$up = false;
+	}
+	var_dump($up);
+
+	if ($collection != null && is_bool($up)) {
+		change_collection_priority($collection, $up);
+	}
+	http_response_code(200);
 } else {
 	http_response_code(422);
 	echo 'Bad Request: Unknown function: ' . htmlspecialchars($_POST['func']);
 }
+#endregion

@@ -14,7 +14,7 @@ function get_rand_img_path()
     $currentDate = date("Ymd");
     mt_srand($currentDate);
     //Set the directory
-    $directories = get_collections();
+    $directories = get_public_collections();
     $randomNumber = mt_rand(1, count($directories));
     $directory = $directories[$randomNumber - 1];
     //Set the image

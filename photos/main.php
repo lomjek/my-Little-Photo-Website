@@ -47,9 +47,13 @@ $files = array_values($files);
 <body style="background-color: <?php echo $colors[0]; ?>;">
     <h1 id="Title" style="color: <?php echo $colors[1]; ?>;"><?php echo $name; ?></h1>
     <h3 class="Home" style="color: <?php echo $colors[1]; ?>;" onclick="window.location.assign('/')"><- Na glavnu stranicu</h3>
-            <?php if ($desc) {
+
+            <?php
+            if ($desc) {
                 echo '<h2 id="desc" style="color: ' . $colors[1] . ';">' . $desc . '</h2>';
-            } ?>
+            }
+            ?>
+
             <hr style="background-color: <?php echo $colors[1]; ?>;">
 
             <div id="image_container">

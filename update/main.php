@@ -9,9 +9,25 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
 
-get_collections();
+get_public_collections();
 
-$order = get_collections(true);
+function display_public_collection(string $collection): void
+{
+    $colors = get_collection_colors($collection);
+    echo '<table class="collections_content" style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
+    echo '<td onclick="window.location=\'/update/collection/edit/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
+    echo '<td onclick="move(true, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↑</h3></td>';
+    echo '<td onclick="move(false, \'' . $collection . '\')"><h3 style="text-align: center; color: ' . $colors[1] . ';">↓</h3></td>';
+    echo '</table>';
+}
+
+function display_unlisted_collection(string $collection): void
+{
+    $colors = get_collection_colors($collection);
+    echo '<table class="collections_content" style="background-color: ' . $colors[0] . ';" id="' . $collection . '">';
+    echo '<td onclick="window.location=\'/update/collection/edit/' . $collection . '\';"><h2 style="text-align: left; margin-left: 2%; color:' . $colors[1] . '; float: left;">' . str_replace("-", " ", $collection) . '</h2></td>';
+    echo '</table>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="hr">
@@ -39,7 +55,33 @@ $order = get_collections(true);
 
             <hr>
             <div id="Images">
-                <?php display_update_collections($order); ?>
+                <?php
+                foreach (get_collections_from_csv() as $collection) {
+                    display_public_collection($collection);
+                }
+                ?>
+            </div>
+
+            <hr>
+
+            <h3>Unlisted collections</h3>
+            <div>
+                <?php
+                foreach (get_unlisted_collections() as $collection) {
+                    display_unlisted_collection($collection);
+                }
+                ?>
+            </div>
+
+            <hr>
+
+            <h3>Private collections</h3>
+            <div>
+                <?php
+                foreach (get_unlisted_collections(true) as $collection) {
+                    display_unlisted_collection($collection);
+                }
+                ?>
             </div>
 </body>
 
