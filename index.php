@@ -51,7 +51,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
     </div>
 
     <hr>
-    <footer>This is Version 3.0.0 of the Image Website</footer>
+    <footer>This is Version 3.1 of the Image Website</footer>
 </body>
 
 </html>
