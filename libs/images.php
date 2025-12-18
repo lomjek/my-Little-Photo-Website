@@ -188,8 +188,8 @@ function process_images($collection, $paths)
 
         process_image($path, $target_path);
         generate_thumbnail($collection, basename($target_path));
-        rmd($_SERVER['DOCUMENT_ROOT'] . "/update/images/uploads/");
     }
+    rmd($_SERVER['DOCUMENT_ROOT'] . "/update/images/uploads/");
 }
 #region API
 if (realpath(__FILE__) != realpath($_SERVER['SCRIPT_FILENAME'])) {
@@ -226,7 +226,7 @@ if ($_POST['func'] == 'get_images_in_collection') {
     $collection = $_POST['collection'];
     $image = $_POST['image'];
     $description = $_POST['description'];
-    if ($collection != null && $image != null && $description != null) {
+    if ($collection != null && $image != null) {
         set_image_description($collection, $image, $description);
         http_response_code(200);
     } else {
