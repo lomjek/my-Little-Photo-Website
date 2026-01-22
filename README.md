@@ -1,5 +1,6 @@
 # my Little Photo Website
 Welcome to my little Project. You can find this Webpage through all it's versions in this github repo. I am not very happy with every one of them, but hey! You can always improve.
+
 > If you have features suggestions you can write them under Issues
 
 ### Why this project?
@@ -12,7 +13,7 @@ I know that there are shiny Frameworks and stuff, but I wanted to go with someth
 - Is _rewrite_mod_ for Apache2 enabled and active?
 - Is the hosting folder allowed to use _.htaccess_?
 - Are the correct owners and permissions set? (php has to be allowed to write into the folder.)
-- Do you have python3 and PIL or pillow installed?
+- Do you have ffmpeg installed and accessible through the command?
 - Is your php configuration right? (Filesize, POST_MAX_SIZE)
 - Add this to the configuration file: __DirectoryIndex index.html index.php main.html main.php__
 - (Is the Firewall and Port Forwarding active?)
