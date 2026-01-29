@@ -51,7 +51,7 @@ async function sendRequest(urlencoded_data, reciver) {
     }
 }
 function rename() {
-    const formData = "func=rename_collection&&old_name=" + encodeURIComponent(original_name.replaceAll(" ", "-")) + "&&new_name=" + encodeURIComponent(document.getElementById('Title').value.replaceAll(" ", "-"));
+    const formData = "func=rename_collection&&old_name=" + encodeURIComponent(original_name.replaceAll(" ", "-")) + "&&new_name=" + encodeURIComponent(document.getElementById('Title').value.replaceAll(" ", "-").replaceAll("&", "-"));
     if (sendRequest(formData, '/libs/collections.php')) {
         original_name = document.getElementById('Title').value
     } else {
