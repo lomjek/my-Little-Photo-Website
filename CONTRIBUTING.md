@@ -4,7 +4,7 @@
 2. If you want to fundementally change the way, something is done, please contact me before doing it.
 3. I don't want external libraries. I want the code to be as small as possible for what it does.
 4. I will stand by ffmpeg for file conversion.
-5. In the future, I will migrate to php_ftm and also avif file format.
+5. In the future, I will migrate to php_fmp and also avif file format.
 6. Please don't do classes in neither js nor php.
 
 > Thank you for your effort to make this website better

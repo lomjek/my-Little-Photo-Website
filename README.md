@@ -18,4 +18,4 @@ I know that there are shiny Frameworks and stuff, but I wanted to go with someth
 - Add this to the configuration file: __DirectoryIndex index.html index.php main.html main.php__
 - (Is the Firewall and Port Forwarding active?)
 
-### This project is licensed under the MIT License.
+### This project is licensed under the LGPLv3 License.

@@ -1,10 +1,10 @@
 <?php
 
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 ?>
@@ -35,7 +35,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
     <hr>
 
     <h2 id="iod_title">Slika dana:</h2>
-    <img id="iod_img" alt="The Image of the Day could not be loaded.">
+    <img id="iod_img" src="<?php echo shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod'); ?>" alt="The Image of the Day could not be loaded.">
     <h3 id="iod_link">Otvori Sliku></h3>
     <h3 id="iod_description">Ovdje ćete svaki dan vidjeti drugu sliku, koja je slika dana. Ovdje pronađete zanimljive slike koje inače ne biste vidjeli. Uživajte!</h3>
 
@@ -51,7 +51,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
     </div>
 
     <hr>
-    <footer>This is Version 3.1 of the Image Website</footer>
+    <footer onclick="window.location = ''">This is Version 3.2 BETA of the Image Website</footer>
 </body>
 
 </html>

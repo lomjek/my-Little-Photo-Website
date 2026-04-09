@@ -1,43 +1,9 @@
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
-async function get_IOD() { //photo
-    var iod_link = document.getElementById('iod_link');
-    var iod_img = document.getElementById('iod_img');
-    console.log("Fetching IOD...");
-    try {
-        const response = await fetch('libs/iod.php', {
-            method: 'POST'
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const urlEncodedString = await response.text();
-        const params = new URLSearchParams(urlEncodedString);
-        const receivedString = params.get('data');
-        console.log("Received IOD: " + receivedString);
-        var iod_array = receivedString.split('/');
-        iod_array[0] = iod_array[0].slice(0, -1)
-        let iod_url = iod_array.join("/");
-
-        iod_link.onclick = function () {
-            window.location.assign(iod_url);
-        };
-        iod_img.onclick = function () {
-            window.location.assign(iod_url);
-        };
-
-        iod_img.src = receivedString;
-
-    } catch (error) {
-        console.error('Fetch error:', error);
-    }
-}
 
 async function get_collections() {
     var collection_container = document.getElementById('collection_container');
@@ -66,5 +32,4 @@ async function get_collections() {
     }
 }
 
-get_IOD();
 get_collections();

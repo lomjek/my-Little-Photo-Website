@@ -1,12 +1,11 @@
 <?php
 
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/iod.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 
@@ -74,9 +73,9 @@ function rename_image($collection, $image, $new_image_name)
         rename($description_path, $new_description_path);
     }
 
-    $iod_image = $_SERVER['DOCUMENT_ROOT'] . '/' . get_iod();
+    $iod_image = shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod');
     if ($iod_image == $image_path) {
-        override_iod($new_image_path);
+        shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod override ' . $image_path);
     }
     return true;
 }

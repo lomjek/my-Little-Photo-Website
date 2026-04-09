@@ -1,0 +1,24 @@
+#!/bin/sh
+
+ROOT_PATH=$(dirname "$(readlink -f "$0")")"/"
+
+echo "Setting up server in" $ROOT_PATH;
+
+echo "";
+
+if command -v ldc2 >/dev/null 2>&1; then
+    DC="ldc2"
+elif command -v ldc >/dev/null 2>&1; then
+    DC="ldc"
+else
+    echo "Error: ldc2 or ldc not found."
+    exit 1
+fi
+
+$DC --version | head -n 2
+
+echo "";
+
+echo "Compiling libs/iod.d"
+echo "module root_conf; enum root_path = \"${ROOT_PATH}\";" > ./libs/root_conf.d
+$DC -O -release -od=./libs -of=./libs/iod ./libs/iod.d
