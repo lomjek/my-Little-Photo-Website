@@ -17,8 +17,14 @@ fi
 
 $DC --version | head -n 2
 
+echo "module root_conf; enum root_path = \"${ROOT_PATH}\";" > ./libs/root_conf.d
 echo "";
 
-echo "Compiling libs/iod.d"
-echo "module root_conf; enum root_path = \"${ROOT_PATH}\";" > ./libs/root_conf.d
+CD="\033[0m" #Color Default
+CB="\033[34m" #Color Blue
+
+echo $CB"Compiling libs/iod.d"$CD
 $DC -O -release -od=./libs -of=./libs/iod ./libs/iod.d
+
+echo $CB"Compiling libs/image_processing.d"$CD
+$DC -O -release -od=./libs -of=./libs/image_processing ./libs/image_processing.d

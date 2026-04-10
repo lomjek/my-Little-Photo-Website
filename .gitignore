@@ -1,2 +1,5 @@
 photos/NORMANDY/
 **/*.o
+
+.vscode
+.idea
