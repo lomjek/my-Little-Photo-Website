@@ -7,6 +7,7 @@
 module image_processing;
 
 import std;
+import libs.root_conf;
 
 struct img_size
 {
@@ -93,6 +94,28 @@ img_size get_thumb_res(img_size original_size)
     return aspect_ratios[700.0 / 525];
 }
 
+img_size get_original_res(string path)
+{
+    string command = escapeShellCommand([
+        "ffprobe",
+        "-v", "error", //Only print errors, if they happened...
+        "-select_streams", "v:0",
+        "-show_entries", "stream=width,height",
+        "-of", "csv=s=x:p=0",
+        path
+    ]);
+
+    auto ffmpeg = executeShell(command);
+
+    if (ffmpeg.status != 0)
+    {
+        writeln("Something went wrong");
+        return img_size(0, 0);
+    }
+    string result = strip(ffmpeg.output);
+    return img_size(result.split("x")[0].to!uint, cast(uint) result.split("x")[1].to!uint);
+}
+
 void main()
 {
     aspect_ratios = [
@@ -113,5 +136,6 @@ void main()
     }
 
     writeln(aspect_ratio_index);
+    writeln(get_original_res(buildPath(root_path, "photos", "Geocache", "example.webp")));
     writeln(get_thumb_res(img_size(1282, 3168)));
 }

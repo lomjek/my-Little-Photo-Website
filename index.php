@@ -51,7 +51,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
     </div>
 
     <hr>
-    <footer onclick="window.location = ''">This is Version 3.2 BETA of the Image Website</footer>
+    <footer onclick="window.location = 'https://github.com/lomjek/my-Little-Photo-Website'">This is Version 3.2 BETA of the Image Website</footer>
 </body>
 
 </html>
