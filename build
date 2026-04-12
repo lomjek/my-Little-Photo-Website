@@ -24,7 +24,7 @@ CD="\033[0m" #Color Default
 CB="\033[34m" #Color Blue
 
 echo $CB"Compiling libs/iod.d"$CD
-$DC -O -release -od=./libs -of=./libs/iod ./libs/iod.d
+$DC -O -release -od=./libs -of=./libs/iod.dc ./libs/iod.d
 
-echo $CB"Compiling libs/image_processing.d"$CD
-$DC -O -release -od=./libs -of=./libs/image_processing ./libs/image_processing.d
+echo $CB"Compiling libs/process_image.d"$CD
+$DC -O -release -od=./libs -of=./libs/process_image.dc ./libs/process_image.d

@@ -1,5 +1,9 @@
 photos/NORMANDY/
-**/*.o
 
+# Dlang files...
+**/*.o
+**/*.dc
+
+#Ide files
 .vscode
 .idea

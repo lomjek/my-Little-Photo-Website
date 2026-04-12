@@ -68,7 +68,7 @@ void write_iod_to_file()
 
 void main(string[] args)
 {
-	if (args.length > 1)
+	if (args.length > 1 && strip(args[1]) == "override")
 	{ //Handle force override
 		iod_date = get_current_date();
 		iod_path = args[1];

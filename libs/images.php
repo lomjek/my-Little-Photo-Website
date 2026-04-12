@@ -73,9 +73,9 @@ function rename_image($collection, $image, $new_image_name)
         rename($description_path, $new_description_path);
     }
 
-    $iod_image = shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod');
+    $iod_image = shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc');
     if ($iod_image == $image_path) {
-        shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod override ' . $image_path);
+        shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc override ' . $image_path);
     }
     return true;
 }
