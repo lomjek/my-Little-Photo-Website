@@ -133,7 +133,11 @@ bool process_thumbnail(string input_path, string main_img_path)
 	);
 
 	if (!crop)
+	{
+		if (exists(temp_path))
+			remove(temp_path);
 		return false;
+	}
 
 	if (original_img_size.x < max_img_size.x)
 	{
@@ -144,12 +148,13 @@ bool process_thumbnail(string input_path, string main_img_path)
 	auto ffmpeg = execute([
 		"ffmpeg",
 		"-y",
-		"-i", input_path,
+		"-i", temp_path,
 		"-c:v", "libwebp",
 		"-q:v", "80",
 		"-vf", format("scale=%u:%u", max_img_size.x, max_img_size.y),
 		generate_thumbnail_path(main_img_path)
 	]);
+	remove(temp_path);
 	return ffmpeg.status == 0;
 }
 
