@@ -75,7 +75,7 @@ function rename_image($collection, $image, $new_image_name)
 
     $iod_image = shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc');
     if ($iod_image == $image_path) {
-        shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc override ' . $image_path);
+        exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc override ' . $image_path);
     }
     return true;
 }
@@ -111,65 +111,6 @@ function get_images_in_collection_for_update($collection)
 }
 #endregion
 #region Image Processing
-function get_img_width($path): int
-{
-    $img_size = getimagesize($path);
-    if ($img_size == false) {
-        return 0;
-    }
-    return $img_size[0];
-}
-
-function generate_thumbnail($collection, $image)
-{
-    $image_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/' . $image;
-    $thumbnail_path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.t_' . $image;
-
-    if (!file_exists($image_path)) {
-        return false;
-    }
-
-    $width = get_img_width($image_path) > 1000 ? 1000 : get_img_width($image_path);
-    $command = "ffmpeg -i " . $image_path . " -vf scale=" . $width . ":-1 -an -q:v 80 " . $thumbnail_path;
-    echo $command;
-    exec($command, $output, $exit_status);
-    return true;
-}
-function process_image($in_path, $out_path)
-{
-    echo "Function running" . PHP_EOL;
-    if (!file_exists($in_path)) {
-        echo "FnF: " . $in_path . PHP_EOL;
-        return false;
-    }
-    if (file_exists($out_path)) {
-        echo "FiE: " . $out_path . PHP_EOL;
-        return false;
-    }
-
-    $command = "ffmpeg -i " .  $in_path . " -c:v libwebp -q:v 95 " . $out_path;
-    print($command . PHP_EOL);
-    $result = null;
-    exec($command, $ouput, $result);
-
-    echo $ouput . PHP_EOL;
-
-    if ($result === 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-function generate_valid_target_path($collection, $filename)
-{
-    $target_path = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . $collection . "/" . $filename . ".webp";
-    $count = 1;
-    while (file_exists($target_path)) {
-        $target_path = $_SERVER['DOCUMENT_ROOT'] . "/photos/" . $collection . "/" . $filename . "_" . $count . ".webp";
-        $count++;
-    }
-    return $target_path;
-}
 function process_images($collection, $paths)
 {
     echo "process_images" . PHP_EOL;
@@ -183,10 +124,10 @@ function process_images($collection, $paths)
             echo "File " . $path . " that was supposed to exist on the server is nowhere to be found..." . PHP_EOL;
             continue;
         }
-        $target_path = generate_valid_target_path($collection, pathinfo($path)['filename']);
-
-        process_image($path, $target_path);
-        generate_thumbnail($collection, basename($target_path));
+        $f_info = pathinfo($path);
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $command = $root . "/libs/process_image.dc " . $path . " " . $collection . " " . $f_info['filename'];
+        exec($command);
     }
     rmd($_SERVER['DOCUMENT_ROOT'] . "/update/images/uploads/");
 }

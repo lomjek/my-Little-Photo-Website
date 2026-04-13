@@ -233,6 +233,14 @@ function get_public_collections(): array
 	return $order; //return order
 }
 
+function get_collections(): array
+{
+	$collections = get_public_collections();
+	$collections = array_merge($collections, get_unlisted_collections());
+	$collections = array_merge($collections, get_unlisted_collections(true));
+	return $collections;
+}
+
 function display_collections($order): void
 {
 	foreach ($order as $collection) {

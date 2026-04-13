@@ -4,6 +4,8 @@
 /*  https://github.com/lomjek/my-Little-Photo-Website  */
 /*******************************************************/
 
+// @ {} [] # \ || != ~
+
 import std;
 
 import libs.root_conf;

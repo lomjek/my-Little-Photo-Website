@@ -16,6 +16,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
     <title>Lovro Leon Slike</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="<?php echo get_about_us(); ?>">
 
     <link rel="stylesheet" href="data/style.css">
     <link rel="stylesheet" href="index.css">

@@ -4,6 +4,8 @@
 /*  https://github.com/lomjek/my-Little-Photo-Website  */
 /*******************************************************/
 
+// @ {} [] # \ || != ~
+
 module libs.process_image;
 
 import std;
@@ -158,6 +160,7 @@ bool process_thumbnail(string input_path, string main_img_path)
 	return ffmpeg.status == 0;
 }
 
+// MARK: Process Image
 bool process_image(string input_path, string collection, string file_name)
 {
 	string main_img_path = generate_img_path(collection, file_name);
@@ -170,13 +173,67 @@ bool process_image(string input_path, string collection, string file_name)
 		main_img_path
 	]);
 
+	writeln(escapeShellCommand([
+			"ffmpeg",
+			"-y",
+			"-i", input_path,
+			"-c:v", "libwebp",
+			"-q:v", "95",
+			main_img_path
+		]));
+
 	if (ffmpeg.status != 0)
 		return false;
 
 	return process_thumbnail(input_path, main_img_path);
 }
 
-void main()
+// MARK: Rebuild thumb
+bool regenerate_thumbnail(string collection, string file)
+{
+	string abs_thumb_path = buildPath(root_path, "photos", collection, ".t_" ~ file ~ ".webp");
+	remove(abs_thumb_path);
+	string img_path = buildPath(root_path, "photos", collection, file ~ ".webp");
+	return process_thumbnail(
+		img_path,
+		img_path
+	);
+}
+
+string[] get_collections()
+{
+	return dirEntries(buildPath(root_path, "photos"), SpanMode.shallow)
+		.filter!(e => e.isDir)
+		.map!(e => baseName(e.name))
+		.array;
+}
+
+bool regenerate_thumbnails()
+{
+	bool success = true;
+	foreach (collection_name; get_collections())
+	{
+		string collection_path = buildPath(root_path, "photos", collection_name);
+		string[] files = dirEntries(collection_path, SpanMode.shallow)
+			.filter!(entry => !entry.name.baseName.startsWith("."))
+			.map!(entry => entry.name.baseName.stripExtension)
+			.array;
+
+		foreach (file_name; files)
+		{
+			bool current_success = regenerate_thumbnail(collection_name, file_name);
+			if (success && current_success)
+				success = true;
+			else
+				success = false;
+		}
+	}
+
+	return success;
+}
+
+// MARK: MAIN
+void main(string[] args)
 {
 	aspect_ratios = [
 		700.0 / 525: img_size(700, 525),
@@ -195,8 +252,32 @@ void main()
 		index++;
 	}
 
-	writeln(process_image(
-			buildPath(root_path, "example.webp"),
-			"Geocache", "example"
-	));
+	if (args.length == 2 && args[1].strip == "regenerate_thumbnails")
+	{
+		write(regenerate_thumbnails());
+		return;
+	}
+
+	if (args.length == 4)
+	{
+		string input_file = args[1].strip;
+		if (!exists(input_file))
+		{
+			throw new Exception("The input file is not valid.");
+		}
+
+		string collection = args[2].strip;
+		if (!get_collections().canFind(collection))
+		{
+			throw new Exception("The collection provided does not exist.");
+		}
+
+		string img_name = args[3].strip;
+
+		write(process_image(input_file, collection, img_name));
+		return;
+	}
+
+	writeln("Your run did nothing. Not right arguments provided.");
+	write(false);
 }

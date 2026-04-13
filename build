@@ -2,7 +2,7 @@
 
 ROOT_PATH=$(dirname "$(readlink -f "$0")")"/"
 
-echo "Setting up server in" $ROOT_PATH;
+echo "Building Server Components in" $ROOT_PATH;
 
 echo "";
 
