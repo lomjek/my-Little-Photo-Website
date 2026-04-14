@@ -143,7 +143,7 @@ bool process_thumbnail(string input_path, string main_img_path)
 
 	if (original_img_size.x < max_img_size.x)
 	{
-		rename(temp_path, generate_thumbnail_path(main_img_path));
+		move_file(temp_path, generate_thumbnail_path(main_img_path));
 		return true;
 	}
 
@@ -189,10 +189,20 @@ bool process_image(string input_path, string collection, string file_name)
 }
 
 // MARK: Rebuild thumb
+void move_file(string input_path, string output_path)
+{
+	if (input_path.exists)
+	{
+		copy(input_path, output_path);
+		remove(input_path);
+	}
+}
+
 bool regenerate_thumbnail(string collection, string file)
 {
 	string abs_thumb_path = buildPath(root_path, "photos", collection, ".t_" ~ file ~ ".webp");
-	remove(abs_thumb_path);
+	if (abs_thumb_path.exists)
+		remove(abs_thumb_path);
 	string img_path = buildPath(root_path, "photos", collection, file ~ ".webp");
 	return process_thumbnail(
 		img_path,

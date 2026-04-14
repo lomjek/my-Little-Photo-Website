@@ -1,10 +1,10 @@
 <?php
 
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
 require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
 
@@ -17,6 +17,29 @@ if (isset($_GET['c'])) {
 if (!file_exists($current)) {
     http_response_code(404);
     exit;
+}
+
+function get_ar($imagePath) {
+    try {
+        $imageInfo = getimagesize($imagePath);
+        if (!$imageInfo) {
+            throw new Exception("Failed to retrieve image information");
+        }
+
+        $width = $imageInfo[0];
+        $height = $imageInfo[1];
+
+        if ($height == 0) {
+            throw new Exception("Image height is zero");
+        }
+
+        $aspectRatio = round($width / $height, 2) * 100;
+
+        return $aspectRatio;
+    } catch (Exception $e) {
+        error_log("Error retrieving image aspect ratio: " . $e->getMessage());
+        return null;
+    }
 }
 
 $colors = get_collection_colors($current);
@@ -59,7 +82,7 @@ $files = array_values($files);
             <div id="image_container">
                 <?php
                 foreach ($files as $image) {
-                    echo "<a href=/photo/" . $current . "/" . $image . ">";
+                    echo "<a class='ar_" . get_ar($_SERVER['DOCUMENT_ROOT'] . "/photos/" . $current . "/.t_" . $image) .  "' href=/photo/" . $current . "/" . $image . ">";
                     echo "<img class='imgs' src='/photos/" . $current . "/.t_" . $image . "'>";
                     echo "</a>";
                 }
