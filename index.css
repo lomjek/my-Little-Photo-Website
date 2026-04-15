@@ -20,7 +20,12 @@
 
 
 #iod_img {
-    width: 100%;
+    max-width: calc(100vw - 40px);
+}
+
+#iod_container {
+    display:flex; 
+    justify-content: center;
 }
 
 #iod_link {
@@ -42,6 +47,10 @@
 }
 
 @media (min-width: 600px) {
+    #iod_container {
+        display: block;
+    }
+
     #iod_img {
         max-width: 50%;
         float: left;
@@ -86,8 +95,15 @@
     font-size: clamp(1rem, 5vw, 3rem);
 }
 
+#collection_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .collections_content {
-    width: 96%;
+    width: 90%;
     min-width: fit-content;
     border-radius: 10vh;
     margin: 1%;

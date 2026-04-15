@@ -1,8 +1,8 @@
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
 #Title {
     font-size: clamp(1rem, 10vw, 7rem);
@@ -11,7 +11,8 @@
 .Home {
     text-align: left;
     cursor: pointer;
-    font-size: clamp(0.7rem, 3vw, 1.5rem);
+    width: clamp(0.7rem, 8vw, 4rem);
+    height: clamp(0.7rem, 8vw, 4rem);
 }
 
 #desc {

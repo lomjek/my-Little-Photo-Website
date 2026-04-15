@@ -1,8 +1,19 @@
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
+
+* {
+	border: 0;
+}
+
+.Home {
+    text-align: left;
+    cursor: pointer;
+    width: clamp(0.7rem, 8vw, 4rem);
+    height: clamp(0.7rem, 8vw, 4rem);
+}
 
 h1 {
 	text-align: center;
@@ -25,6 +36,7 @@ h4 {
 hr {
 	background-color: #333;
 	clear: both;
+	width: 100%;
 	margin-top: 1vh;
 	margin-bottom: 1vh;
 	padding-bottom: 1vh;
@@ -39,7 +51,13 @@ footer{
 }
 body {
 	background-color: #aaa;
+	margin: 0;
 }
+
+.margin_10_px {
+	margin-left: 10px;
+	margin-right: 10px;
+} 
 
 td{
 	width: 25%;

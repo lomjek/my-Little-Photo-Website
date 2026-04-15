@@ -25,34 +25,37 @@ require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 </head>
 
 <body id="main">
-    <p hidden><?php echo get_about_us(); ?></p>
-    <h4 onclick="window.location.assign('update')" id="open_update">ADMIN></h4>
+    <h4 class="margin_10_px" onclick="window.location.assign('update')" id="open_update">ADMIN></h4>
 
     <h1 id="Title">Lovro Leon Slike</h1>
     <?php if (is_maintenance()) {
-        echo '<h3 id="maintenance">Ima rade na serveru, tako da je moguče, da u sljedeče vrijeme naletite na probleme.</h3>';
+        echo '<h3 id="maintenance" class="margin_10_px">Ima rade na serveru, tako da je moguče, da u sljedeče vrijeme naletite na probleme.</h3>';
     } ?>
 
     <hr>
 
-    <h2 id="iod_title">Slika dana:</h2>
-    <img id="iod_img" src="<?php echo shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc'); ?>" alt="The Image of the Day could not be loaded.">
-    <h3 id="iod_link">Otvori Sliku></h3>
-    <h3 id="iod_description">Ovdje ćete svaki dan vidjeti drugu sliku, koja je slika dana. Ovdje pronađete zanimljive slike koje inače ne biste vidjeli. Uživajte!</h3>
+    <h2 id="iod_title" class="margin_10_px">Slika dana:</h2>
+
+    <div id="iod_container">
+        <img id="iod_img" class="margin_10_px" src="<?php echo shell_exec($_SERVER['DOCUMENT_ROOT'] . '/libs/iod.dc'); ?>" alt="The Image of the Day could not be loaded.">
+    </div>
+
+    <h3 id="iod_link" class="margin_10_px">Otvori Sliku></h3>
+    <h3 id="iod_description" class="margin_10_px">Ovdje ćete svaki dan vidjeti drugu sliku, koja je slika dana. Ovdje pronađete zanimljive slike koje inače ne biste vidjeli. Uživajte!</h3>
 
     <hr>
 
-    <h2 id="about_title">O nama:</h2>
-    <h3 id="about_content"><?php echo get_about_us(); ?></h3>
+    <h2 id="about_title" class="margin_10_px">O nama:</h2>
+    <h3 id="about_content" class="margin_10_px"><?php echo get_about_us(); ?></h3>
 
     <hr>
 
-    <h2 id="collections_title">Skupovi slika:</h2>
+    <h2 id="collections_title" class="margin_10_px">Skupovi slika:</h2>
     <div id="collection_container">
     </div>
 
     <hr>
-    <footer onclick="window.location = 'https://github.com/lomjek/my-Little-Photo-Website'">This is Version 3.2 BETA of the Image Website</footer>
+    <footer class="margin_10_px" onclick="window.location = 'https://github.com/lomjek/my-Little-Photo-Website'">This is Version 3.2 BETA of the Image Website</footer>
 </body>
 
 </html>

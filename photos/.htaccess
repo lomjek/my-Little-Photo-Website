@@ -3,7 +3,7 @@ DirectorySlash Off
 RewriteBase /photos/
 
 # Avoid rewriting for the main.php file itself
-RewriteCond %{REQUEST_URI} !^/photos/main.php$
+RewriteCond %{REQUEST_URI} !^/photos/photos.php$
 
 # Internal rewrite without changing the URL
-RewriteRule ^([^/]+)/?$ main.php?c=$1 [L,QSA]
+RewriteRule ^([^/]+)/?$ photos.php?c=$1 [L,QSA]

@@ -23,7 +23,9 @@ $order = get_collections();
 </head>
 
 <body>
-    <h3 id="leave" onclick="window.location = '/update/'">← Ažuriranje LLS</h3>
+	<svg class="Home margin_10_px" viewBox="0 0 16 16" onclick="window.location.assign('/update/')">
+		<path fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8H4l4 4M4 8l4-4"/>
+	</svg>
 
     <h1 id='Title'>Dodajte Slike</h1>
 
