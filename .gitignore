@@ -1,4 +1,5 @@
 photos/NORMANDY/
+update/.htpasswd
 
 # Dlang files...
 **/*.o

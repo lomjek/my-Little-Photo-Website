@@ -1,0 +1,23 @@
+#!/bin/sh
+
+ROOT_PATH=$(dirname "$(readlink -f "$0")")"/"
+
+CD="\033[0m" #Color Default
+CY="\033[33m" #Color Yellow
+CR="\033[31m"
+
+echo "Installing Site to serve from" $CY$ROOT_PATH$CD;
+echo
+echo "It's important, that the "$CR"path is correct"$CD" and that the path points to the directory with the website in it."
+read -p "Confirm with enter: " enter
+
+echo
+
+eval ./build final
+
+echo ""
+echo $CY"Only proceed, if everything "$CR"built without errors"$CD
+read -p "Confirm with enter: " enter
+echo ""
+
+eval "./installer.dc"

@@ -23,6 +23,11 @@ echo "";
 CD="\033[0m" #Color Default
 CB="\033[34m" #Color Blue
 
+if [ "$1" = "final" ]; then
+    echo $CB"Compiling install_helper.d"$CD
+    $DC -O -release -od=. -of=./installer.dc ./install_helper.d
+fi
+
 echo $CB"Compiling libs/iod.d"$CD
 $DC -O -release -od=./libs -of=./libs/iod.dc ./libs/iod.d
 
