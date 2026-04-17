@@ -17,12 +17,9 @@ You will need to have a valid ldc installation. Either ldc or ldc2 via cli. For 
 ```
 
 ### Checklist of things to do, before hosting:
-- Is _rewrite_mod_ for Apache2 enabled and active?
-- Is the hosting folder allowed to use _.htaccess_?
 - Are the correct owners and permissions set? (php has to be allowed to write into the folder.)
 - Do you have ffmpeg installed and accessible through the command?
 - Is your php configuration right? (Filesize, POST_MAX_SIZE)
-- Add this to the configuration file: __DirectoryIndex index.html index.php main.html main.php__
 - (Is the Firewall and Port Forwarding active?)
 
 ### This project is licensed under the LGPLv3 License.
