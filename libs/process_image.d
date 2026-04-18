@@ -45,6 +45,7 @@ string generate_thumbnail_path(string img_path)
 img_size get_original_res(string path)
 {
 	auto ffmpeg = execute([
+		"nice", "-n", "15",
 		"ffprobe",
 		"-v", "error", //Only print errors, if they happened...
 		"-select_streams", "v:0", //Read the first visual stream...
@@ -185,7 +186,9 @@ bool process_image(string input_path, string collection, string file_name)
 	if (ffmpeg.status != 0)
 		return false;
 
-	return process_thumbnail(input_path, main_img_path);
+	bool success = process_thumbnail(input_path, main_img_path);
+	std.file.remove(input_path);
+	return success;
 }
 
 // MARK: Rebuild thumb

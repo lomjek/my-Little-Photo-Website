@@ -110,27 +110,6 @@ function get_images_in_collection_for_update($collection)
     return $result;
 }
 #endregion
-#region Image Processing
-function process_images($collection, $paths)
-{
-    echo "process_images" . PHP_EOL;
-    if (!collection_exists($collection)) {
-        echo "Cannot write into inexistent collection..." . PHP_EOL;
-        return false;
-    }
-
-    foreach ($paths as $path) {
-        if (!file_exists($path)) {
-            echo "File " . $path . " that was supposed to exist on the server is nowhere to be found..." . PHP_EOL;
-            continue;
-        }
-        $f_info = pathinfo($path);
-        $root = $_SERVER['DOCUMENT_ROOT'];
-        $command = $root . "/libs/process_image.dc " . $path . " " . $collection . " " . $f_info['filename'];
-        exec($command);
-    }
-    rmd($_SERVER['DOCUMENT_ROOT'] . "/update/images/uploads/");
-}
 #region API
 if (realpath(__FILE__) != realpath($_SERVER['SCRIPT_FILENAME'])) {
     return;
@@ -181,20 +160,6 @@ if ($_POST['func'] == 'get_images_in_collection') {
     } else {
         http_response_code(400);
     }
-} elseif ($_POST['func'] == "generate_thumbnail") {
-    $collection = $_POST['collection'];
-    $image = $_POST['image'];
-    generate_thumbnail($collection, $image);
-} elseif ($_POST['func'] == 'process_images') {
-    $collection = str_replace(" ", "-", $_POST['collection']);
-    $paths = explode(",", $_POST['paths']);
-    if ($collection != null && $paths != null) {
-        process_images($collection, $paths);
-        http_response_code(200);
-    } else {
-        http_response_code(400);
-    }
-    exit;
 } else {
     http_response_code(422);
     echo 'Bad Request: Unknown function: ' . htmlspecialchars($_POST['func']);

@@ -1,10 +1,12 @@
 <?php
 
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
+
+// @ {} [] # \ || != ~
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
 $order = get_collections();
@@ -14,12 +16,12 @@ $order = get_collections();
 <html>
 
 <head>
-    <title>Dodaj Slike</title>
+	<title>Dodaj Slike</title>
 
-    <link rel="stylesheet" href="/update/images/index.css">
-    <link rel="stylesheet" href="/data/style.css">
+	<link rel="stylesheet" href="/update/images/index.css">
+	<link rel="stylesheet" href="/data/style.css">
 
-    <script src="/update/images/index.js"></script>
+	<script src="/update/images/index.js"></script>
 </head>
 
 <body>
@@ -27,31 +29,31 @@ $order = get_collections();
 		<path fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8H4l4 4M4 8l4-4"/>
 	</svg>
 
-    <h1 id='Title'>Dodajte Slike</h1>
+	<h1 id='Title'>Dodajte Slike</h1>
 
-    <hr>
+	<hr>
 
-    <div id="Container">
+	<div id="Container">
 
-        <select id="skupovi">
-            <?php
-            foreach ($order as $collection) {
-                echo "<option value='" . $collection . "'>" . $collection . "</option>";
-            }
-            ?>
-        </select>
+		<select id="skupovi">
+			<?php
+			foreach ($order as $collection) {
+				echo "<option value='" . $collection . "'>" . $collection . "</option>";
+			}
+			?>
+		</select>
 
-        <input id="files" name="files[]" type="file" multiple accept="image/*" />
+		<input id="files" name="files[]" type="file" multiple accept="image/*" />
 
-        <button id="Upload" onclick="Upload()">Upload</button>
+		<button id="Upload" onclick="Upload()">Upload</button>
 
-        <div id='uploading' style="display: none;">
-            <progress id="progressBar" style="width: 100%; height: clamp(0.7rem, 9vw, 5rem);" value="0" max="100"></progress>
-        </div>
+		<div id='uploading' style="display: none;">
+			<progress id="progressBar" style="width: 100%; height: clamp(0.7rem, 9vw, 5rem);" value="0" max="100"></progress>
+		</div>
 
-    </div>
+	</div>
 
-    <hr>
+	<hr>
 
 </body>
 
