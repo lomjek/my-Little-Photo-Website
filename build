@@ -33,3 +33,6 @@ $DC -O -release -od=./libs -of=./libs/iod.dc ./libs/iod.d
 
 echo $CB"Compiling libs/process_image.d"$CD
 $DC -O -release -od=./libs -of=./libs/process_image.dc ./libs/process_image.d
+
+echo $CB"Compiling libs/images.d"$CD
+$DC -O -release -od=./libs -of=./libs/images.dc ./libs/images.d

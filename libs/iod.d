@@ -6,6 +6,8 @@
 
 // @ {} [] # \ || != ~
 
+module iod;
+
 import std;
 
 import libs.root_conf;

@@ -8,7 +8,17 @@
 
 module libs.process_image;
 
-import std;
+import std.stdio : write, writeln;
+import std.file : exists, dirEntries, remove, copy, tempDir, SpanMode;
+import std.path : buildPath, baseName, stripExtension, dirName;
+import std.process : execute, executeShell, escapeShellCommand;
+import std.string : strip;
+import std.array : split, array;
+import std.format : format;
+import std.uuid : randomUUID;
+import std.conv : to;
+import std.algorithm : canFind, filter, map, startsWith;
+
 import libs.root_conf;
 
 struct img_size
@@ -32,6 +42,7 @@ string generate_img_path(string collection, string file_name)
 	while (exists(path))
 	{
 		path = buildPath(root_path, "photos", collection, file_name ~ format("_%u.webp", count));
+		count++;
 	}
 
 	return path;
@@ -187,7 +198,7 @@ bool process_image(string input_path, string collection, string file_name)
 		return false;
 
 	bool success = process_thumbnail(input_path, main_img_path);
-	std.file.remove(input_path);
+	remove(input_path);
 	return success;
 }
 

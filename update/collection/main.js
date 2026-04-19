@@ -4,6 +4,8 @@
 /*  https://github.com/lomjek/my-Little-Photo-Website  */
 /*******************************************************/
 
+// @ {} [] # \ || != ~
+
 images_in_collection = [];
 
 function get_basename(path) {
@@ -28,29 +30,39 @@ function change_t_col() {
 	document.getElementById("path_back").style.stroke=document.getElementById("tcolor").value, "important";
 }
 
-//input
 function leave() {
 	window.location.assign('/update/');
 }
+
+//MARK: Collection operations
 async function sendRequest(urlencoded_data, reciver) {
-	try {
-		const response = await fetch(reciver, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: urlencoded_data
-		})
-		console.log(response);
-		if (!response.ok) {
-			const errorText = await response.text();
-			throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
-		}
-		console.log(await response.text());
-		return true;
-	} catch (error) {
-		alert('Error during request: ' + error);
-		return false;
-	}
+    try {
+        const response = await fetch(reciver, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: urlencoded_data
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
+        }
+
+        const data = await response.text();
+        
+        return {
+            ok: true,
+            body: data
+        };
+    } catch (error) {
+        alert('Error during request: ' + error);
+        return {
+            ok: false,
+            body: null
+        };
+    }
 }
+
 function rename() {
 	const formData = "func=rename_collection&&old_name=" + encodeURIComponent(original_name.replaceAll(" ", "-")) + "&&new_name=" + encodeURIComponent(document.getElementById('Title').value.replaceAll(" ", "-").replaceAll("&", "-"));
 	if (sendRequest(formData, '/libs/collections.php')) {
@@ -74,6 +86,7 @@ function set_visibility() {
 }
 async function ask_delete() {
 	const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovaj skup?\nJednom kad ga nema, ga nema...");
+	if (!userChoice) return;
 	var send_thing = 'func=delete_collection&&collection=' + original_name.replaceAll(" ", "-");
 	console.log(send_thing);
 	if (sendRequest(send_thing, '/libs/collections.php')) {
@@ -81,6 +94,7 @@ async function ask_delete() {
 	}
 }
 
+//MARK: Image operations
 function delete_image_from_collection(image_name) {
 	const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovu sliku iz skupa?");
 	if (userChoice) {
@@ -88,10 +102,8 @@ function delete_image_from_collection(image_name) {
 		formData += '&& collection=' + encodeURIComponent(original_name.replaceAll(" ", "-"));
 		formData += '&&image=' + encodeURIComponent(image_name);
 
-		console.log(formData);
 		sendRequest(formData, '/libs/images.php').then(success => {
-			if (success) {
-				const imgParent = document.getElementById(image_name + "_parent");
+			if (success.ok) {
 				const imageParent = document.getElementById(image_name + "_parent");
 				imageParent.remove();
 			}
@@ -104,14 +116,13 @@ function set_image_description(imgParent) {
 	formData += "&&image=" + encodeURIComponent(imgParent.querySelector('img').alt);
 	formData += "&&description=" + encodeURIComponent(imgParent.querySelector('textarea').value);
 	sendRequest(formData, '/libs/images.php').then(success => {
-		if (success) {
-			console.log("Description saved.");
-			window.location.reload();
+		if (success.ok) {
+			imgParent.querySelector('textarea').value = success.body;
 		}
 	});
 }
 
-function sendImgRenameRequest(imgParent) {
+async function sendImgRenameRequest(imgParent) {
 	const image = imgParent.querySelector('img');
 	const new_name = imgParent.querySelector('input').value;
 
@@ -120,14 +131,14 @@ function sendImgRenameRequest(imgParent) {
 	formData += "&&old_name=" + encodeURIComponent(image.alt);
 	formData += "&&new_name=" + encodeURIComponent(new_name.replaceAll(" ", "-") + '.webp');
 
-	console.log(formData)
 	sendRequest(formData, '/libs/images.php').then(success => {
-		if (success) {
-			window.location.reload();
+		if (success.ok){
+			imgParent.querySelector('input').value = success.body;
 		}
 	});
 }
 
+//MARK: Loading of images
 async function load_images_in_collection() {
 	console.log("Loading images in collection: " + original_name);
 	const formData = "func=get_images_in_collection_for_update&&collection=" + encodeURIComponent(original_name.replaceAll(" ", "-"));
@@ -142,7 +153,6 @@ async function load_images_in_collection() {
 			throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
 		}
 		const data = await response.json();
-		console.log(data);
 		const imageContainer = document.getElementById('image_container');
 		data.forEach(image => {
 			images_in_collection.push(image.name);
@@ -150,6 +160,7 @@ async function load_images_in_collection() {
 			const imgParent = document.createElement('div');
 			imgParent.id = image.name + "_parent";
 			imgParent.className = "imgParent";
+			imgParent.classList.add("ar_" + image.aspect_ratio)
 
 			const nameLabel = document.createElement('input');
 			nameLabel.value = get_basename(image.name);
@@ -195,7 +206,8 @@ async function load_images_in_collection() {
 	change_bg_color();
 	change_t_col();
 }
-//When page loaded...
+
+//MARK: Onload
 window.addEventListener('load', function () {
 	change_bg_color();
 	change_t_col();

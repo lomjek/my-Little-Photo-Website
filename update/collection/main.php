@@ -1,10 +1,10 @@
 <?php
 
-/*****************************************************/
-/*  This file is part of 'my Little Photo Website'   */
-/* It is published on github under the MIT License:  */
-/* https://github.com/lomjek/my-Little-Photo-Website */
-/*****************************************************/
+/*******************************************************/
+/*   This file is part of 'my Little Photo Website'    */
+/* It is published on github under the LGPLv3 License: */
+/*  https://github.com/lomjek/my-Little-Photo-Website  */
+/*******************************************************/
 
 require $_SERVER['DOCUMENT_ROOT'] . '/data/server.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';

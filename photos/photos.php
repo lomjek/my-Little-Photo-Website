@@ -6,7 +6,8 @@
 /*  https://github.com/lomjek/my-Little-Photo-Website  */
 /*******************************************************/
 
-require $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/collections.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/libs/images.php';
 
 if (isset($_GET['c'])) {
 	$current = htmlspecialchars($_GET['c']);
@@ -17,29 +18,6 @@ if (isset($_GET['c'])) {
 if (!file_exists($current)) {
 	http_response_code(404);
 	exit;
-}
-
-function get_ar($imagePath) {
-	try {
-		$imageInfo = getimagesize($imagePath);
-		if (!$imageInfo) {
-			throw new Exception("Failed to retrieve image information");
-		}
-
-		$width = $imageInfo[0];
-		$height = $imageInfo[1];
-
-		if ($height == 0) {
-			throw new Exception("Image height is zero");
-		}
-
-		$aspectRatio = round($width / $height, 2) * 100;
-
-		return $aspectRatio;
-	} catch (Exception $e) {
-		error_log("Error retrieving image aspect ratio: " . $e->getMessage());
-		return null;
-	}
 }
 
 $colors = get_collection_colors($current);
