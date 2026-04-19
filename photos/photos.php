@@ -85,9 +85,10 @@ $files = array_values($files);
 	<div id="image_container">
 		<?php
 			foreach ($files as $image) {
-				echo "<a class='ar_" . get_ar($_SERVER['DOCUMENT_ROOT'] . "/photos/" . $current . "/.t_" . $image) .  "' href=/photo/" . $current . "/" . $image . ">";
-				echo "<img class='imgs' src='/photos/" . $current . "/.t_" . $image . "'>";
-				echo "</a>";
+				echo "<img 
+					class='imgs ar_" . get_ar($_SERVER['DOCUMENT_ROOT'] . "/photos/" . $current . "/.t_" . $image) .  "' 
+					src='/photos/" . $current . "/.t_" . $image . "'
+					onclick=\"window.location.assign('/photo/" . $current . "/" . $image . "')\">";			
 			}
 		?>
 	</div>
