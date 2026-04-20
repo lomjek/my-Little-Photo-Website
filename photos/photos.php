@@ -43,6 +43,15 @@ $files = array_values($files);
 
 	<link rel="stylesheet" href="/data/style.css">
 	<link rel="stylesheet" href="/data/photos.css">
+	<script>
+		function handleImageError(image) {
+			if (image.src != '/data/NO_IMG.svg'){
+				image.onerror = null;
+				image.src = '/data/NO_IMG.svg';
+				image.classList.add("ar_133");
+			}
+		}
+	</script>
 </head>
 
 <body style="background-color: <?php echo $colors[0]; ?>;">
@@ -66,6 +75,7 @@ $files = array_values($files);
 				echo "<img 
 					class='imgs ar_" . get_ar($_SERVER['DOCUMENT_ROOT'] . "/photos/" . $current . "/.t_" . $image) .  "' 
 					src='/photos/" . $current . "/.t_" . $image . "'
+					onerror='handleImageError(this)'
 					onclick=\"window.location.assign('/photo/" . $current . "/" . $image . "')\">";			
 			}
 		?>

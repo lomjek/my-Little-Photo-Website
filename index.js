@@ -6,30 +6,37 @@
 
 
 async function get_collections() {
-    var collection_container = document.getElementById('collection_container');
-    data = {
-        'func': 'display_collections'
-    }
-    try {
-        fetch('libs/collections.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(data).toString()
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(data => {
-                collection_container.innerHTML = data;
-            });
-    } catch (error) {
-        console.error('Fetch error:', error);
-    }
+	var collection_container = document.getElementById('collection_container');
+	data = {
+		'func': 'display_collections'
+	}
+	try {
+		fetch('libs/collections.php', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: new URLSearchParams(data).toString()
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				collection_container.innerHTML = data;
+			});
+	} catch (error) {
+		console.error('Fetch error:', error);
+	}
+}
+
+function handleImageError(image) {
+	if (image.src != 'data/NO_IMG.svg'){
+		image.onerror = null;
+		image.src = 'data/NO_IMG.svg';
+	}
 }
 
 get_collections();

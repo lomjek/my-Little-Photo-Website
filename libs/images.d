@@ -54,8 +54,8 @@ string rename_image(string collection, string image, string new_image_name)
 	string description_path = buildPath(photos_dir, ".d_" ~ image ~ ".md");
 
 	string new_image_path = generate_img_path(collection, new_image_name.stripExtension);
-	string new_thumbnail_path = generate_thumbnail_path(new_image_name);
-	string new_description_path = generate_description_path(new_image_name);
+	string new_thumbnail_path = generate_thumbnail_path(new_image_path);
+	string new_description_path = generate_description_path(new_image_path);
 
 	if (exists(image_path))
 	{
