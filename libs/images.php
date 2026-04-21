@@ -41,6 +41,7 @@ function get_image_description($collection, $image)
 		return "";
 	}
 }
+
 function set_image_description($collection, $image, $description)
 {
 	$path = $_SERVER['DOCUMENT_ROOT'] . '/photos/' . $collection . '/.d_' . $image . '.md';
@@ -154,6 +155,17 @@ if ($_POST['func'] == 'get_images_in_collection') {
 		delete_image($collection, $image);
 		http_response_code(200);
 	} else {
+		http_response_code(400);
+	}
+} elseif ($_POST['func'] == 'change_collection_of_image') {
+	$collection = $_POST['collection'];
+	$image = $_POST['image'];
+	$new_collection = $_POST['new_collection'];
+	if ($collection != null && $image != null && $new_collection != null) {
+		echo exec($_SERVER['DOCUMENT_ROOT'] . '/libs/images.dc change_collection_of_image ' . $collection . ' ' . $image . '.webp ' . $new_collection);
+		http_response_code(200);
+	}
+	else{
 		http_response_code(400);
 	}
 } else {

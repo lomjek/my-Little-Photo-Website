@@ -53,6 +53,7 @@ function display_unlisted_collection(string $collection): void
 	<h1 id="Title">Ažuriranje LLS</h1>
 
 	<h3 id='open_update' onclick="window.location.assign('/update/images')">Dodajte Slike =></h3>
+	<h3 id='open_update' onclick="window.location.assign('/update/move_images.php')">Pomakni sliku u drugi skup =></h3>
 
 	<hr>
 	
