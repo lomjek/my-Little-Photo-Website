@@ -43,6 +43,8 @@ $files = array_values($files);
 
 	<link rel="stylesheet" href="/data/style.css">
 	<link rel="stylesheet" href="/data/photos.css">
+	<link rel="stylesheet" href="/data/tiling.css">
+
 	<script>
 		function handleImageError(image) {
 			if (image.src != '/data/NO_IMG.svg'){

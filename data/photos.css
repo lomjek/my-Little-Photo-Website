@@ -21,82 +21,12 @@
 	margin-bottom: 2vh;
 }
 
-#image_container {
-	display: grid;
-	place-items: center;
-	grid-auto-flow: dense;
-	gap: 5px;
-}
-
-.ar_33 {
-	grid-row: span 4;
-	grid-column: span 1;
-}
-
-.ar_44 {
-	grid-row: span 3;
-	grid-column: span 1;
-}
-
-.ar_66 {
-	grid-row: span 2;
-	grid-column: span 1;
-}
-
-.ar_133 {
-	grid-row: span 1;
-	grid-column: span 1;
-}
-
 img {
 	object-fit: fill;
 	width: 100%;
 	height: 100%;
 	display: block;
 	overflow: hidden;
-}
-
-@media (min-width: 600px) {
-	#image_container {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.ar_268 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-	.ar_402 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-}
-@media (min-width: 900px) {
-	#image_container {
-		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.ar_402 {
-		grid-row: span 1;
-		grid-column: span 3;
-	}
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 3;
-	}
-}
-@media (min-width: 1200px) {
-	#image_container {
-		grid-template-columns: repeat(4, 1fr);
-	}
-
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 4;
-	}
 }
 
 .imgs {

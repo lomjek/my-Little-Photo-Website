@@ -4,6 +4,14 @@
 /*  https://github.com/lomjek/my-Little-Photo-Website  */
 /*******************************************************/
 
+#image_container {
+	display: grid;
+	place-items: center;
+	grid-auto-flow: dense;
+	grid-template-columns: 1fr;
+	gap: 5px;
+}
+
 .ar_33 {
 	grid-row: span 4;
 	grid-column: span 1;
