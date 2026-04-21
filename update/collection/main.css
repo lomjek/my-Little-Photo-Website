@@ -9,10 +9,23 @@
 	font-size: clamp(0.7rem, 3vw, 1.5rem);
 }
 
+div, input, body, textarea, button, select, option{
+	background-color: var(--bg_color, "#aaaaaa");
+}
+
+input, textarea, button, select, option, label, h2{
+	color: var(--tx_color, "#333333");
+}
+hr{
+	background-color: var(--tx_color, "#333333");
+}
+
 #Title {
 	font-size: clamp(1rem, 10vw, 7rem);
 	text-align: center;
-	width: 100%;
+	width: min-content;
+	max-width: 95vw;
+	field-sizing: content;
 }
 
 #delete {
@@ -23,7 +36,7 @@
 	text-align: center;
 	font-size: clamp(0.8rem, 5vw, 2rem);
 	margin-bottom: 2vh;
-	width: 100%;
+	width: 95vw;
 }
 
 label {
@@ -37,7 +50,7 @@ select {
 #delete_collection {
 	text-align: center;
 	font-size: clamp(1rem, 20vw, 5rem);
-	width: 100%;
+	width: fit-content;
 }
 
 h3 {
@@ -49,75 +62,15 @@ h3 {
 	display: grid;
 	place-items: center;
 	grid-auto-flow: dense;
+	max-width: 100vw;
 	gap: 5px;
-}
-
-.ar_33 {
-	grid-row: span 4;
-	grid-column: span 1;
-}
-
-.ar_44 {
-	grid-row: span 3;
-	grid-column: span 1;
-}
-
-.ar_66 {
-	grid-row: span 2;
-	grid-column: span 1;
-}
-
-.ar_133 {
-	grid-row: span 1;
-	grid-column: span 1;
-}
-
-@media (min-width: 600px) {
-	#image_container {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.ar_268 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-	.ar_402 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 2;
-	}
-}
-@media (min-width: 900px) {
-	#image_container {
-		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.ar_402 {
-		grid-row: span 1;
-		grid-column: span 3;
-	}
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 3;
-	}
-}
-@media (min-width: 1200px) {
-	#image_container {
-		grid-template-columns: repeat(4, 1fr);
-	}
-
-	.ar_536 {
-		grid-row: span 1;
-		grid-column: span 4;
-	}
 }
 
 .imgParent {
 	margin-bottom: 10px;
 	flex-direction: column;
+	display: flex;
+	width: 99%;
 }
 
 .imgNameLabel {

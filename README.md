@@ -23,3 +23,6 @@ You will need to have a valid ldc installation. Either ldc or ldc2 via cli. For 
 - (Is the Firewall and Port Forwarding active?)
 
 ### This project is licensed under the LGPLv3 License.
+
+## Where do the Icons come from?
+I got all my Icons that I use, which are more or less five from the [GodotEngine](https://www.godotengine.org). You can find their source code [here](https://github.com/godotengine/godot/).

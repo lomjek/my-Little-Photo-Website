@@ -16,18 +16,11 @@ function get_basename(path) {
 }
 
 function change_bg_color() {
-	const allBodyElements = document.body.querySelectorAll('*');
-	allBodyElements.forEach(element => {
-		element.style.setProperty("background-color", document.getElementById("bcolor").value, "important");
-	});
-	document.body.style.setProperty("background-color", document.getElementById("bcolor").value, "important");
+	document.documentElement.style.setProperty('--bg_color', document.getElementById("bcolor").value);
 }
+
 function change_t_col() {
-	const allBodyElements = document.body.querySelectorAll('*');
-	allBodyElements.forEach(element => {
-		element.style.setProperty("color", document.getElementById("tcolor").value, "important");
-	});
-	document.getElementById("path_back").style.stroke=document.getElementById("tcolor").value, "important";
+	document.documentElement.style.setProperty('--tx_color', document.getElementById("tcolor").value);
 }
 
 function leave() {
@@ -36,54 +29,70 @@ function leave() {
 
 //MARK: Collection operations
 async function sendRequest(urlencoded_data, reciver) {
-    try {
-        const response = await fetch(reciver, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: urlencoded_data
-        });
+	try {
+		const response = await fetch(reciver, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: urlencoded_data
+		});
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
-        }
+		if (!response.ok) {
+			const errorText = await response.text();
+			throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorText}`);
+		}
 
-        const data = await response.text();
-        
-        return {
-            ok: true,
-            body: data
-        };
-    } catch (error) {
-        alert('Error during request: ' + error);
-        return {
-            ok: false,
-            body: null
-        };
-    }
+		const data = await response.text();
+		
+		return {
+			ok: true,
+			body: data
+		};
+	} catch (error) {
+		alert('Error during request: ' + error);
+		return {
+			ok: false,
+			body: null
+		};
+	}
 }
 
 function rename() {
 	const formData = "func=rename_collection&&old_name=" + encodeURIComponent(original_name.replaceAll(" ", "-")) + "&&new_name=" + encodeURIComponent(document.getElementById('Title').value.replaceAll(" ", "-").replaceAll("&", "-"));
-	if (sendRequest(formData, '/libs/collections.php')) {
-		original_name = document.getElementById('Title').value
-	} else {
-		document.getElementById('Title').value = original_name;
-	}
+	sendRequest(formData, '/libs/collections.php').then(success => {
+		if (success && success.ok){
+			original_name = document.getElementById('Title').value;
+			history.replaceState({ page: 1 }, document.getElementById('Title').value, "/update/collection/edit/" + document.getElementById('Title').value);
+		}
+		else {
+			document.getElementById('Title').value = original_name;
+			alert("There was an error in renaming the collection");
+		}
+	})
 }
+
 function save_description() {
 	const formData = 'func=set_collection_description&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&description=' + encodeURIComponent(document.getElementById('desc').value);
 	sendRequest(formData, '/libs/collections.php');
 }
+
 function save_colors() {
 	let colors = [document.getElementById('bcolor').value, document.getElementById('tcolor').value];
 	let formData = 'func=set_collection_colors&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&bg_color=' + encodeURIComponent(colors[0]) + '&&text_color=' + encodeURIComponent(colors[1]);
-	sendRequest(formData, '/libs/collections.php');
+	sendRequest(formData, '/libs/collections.php').then(success => {
+		if (success && success.ok){
+			change_t_col();
+			change_bg_color();
+		} else {
+			alert("Something went wrong and we could not save the new colours. Please refresh this page before continuing");
+		}
+	});
 }
+
 function set_visibility() {
 	const formData = 'func=set_collection_visibility&&collection=' + encodeURIComponent(original_name.replaceAll(" ", "-")) + '&&visibility=' + encodeURIComponent(document.getElementById('visibility').value);
 	sendRequest(formData, '/libs/collections.php');
 }
+
 async function ask_delete() {
 	const userChoice = confirm("Dali ste sigurni, da bi izbrisali ovaj skup?\nJednom kad ga nema, ga nema...");
 	if (!userChoice) return;
@@ -133,7 +142,13 @@ async function sendImgRenameRequest(imgParent) {
 
 	sendRequest(formData, '/libs/images.php').then(success => {
 		if (success.ok){
-			imgParent.querySelector('input').value = success.body;
+			imgParent.id = success.body + "_parent";
+			imgParent.querySelector("img").alt(success.body);
+			imgParent.querySelector('input').value = get_basename(success.body);
+
+			imgParent.querySelector("textarea").id = success.body + "_caption"
+			imgParent.querySelector('input').id  = success.body + "_label"
+			imgParent.querySelector('.imgDeleteButton').id = success.body + "_delete_button"
 		}
 	});
 }
@@ -186,10 +201,13 @@ async function load_images_in_collection() {
 
 			const moreContainer = document.createElement('div');
 			moreContainer.className = "imgMoreContainer";
-			moreContainer.id = image.name + "_more_container";
 
 			const deleteButton = document.createElement('button');
-			deleteButton.innerText = "Izbriši sliku iz skupa";
+			const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="btn-icon"><path fill="currentColor" d="m5 1v1h-4v2h14v-2h-4v-1zm-3 4v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8zm1 2h2v6h-2zm4 0h2v6h-2zm4 0h2v6h-2z"/></svg>`;
+			deleteButton.innerHTML = `
+				${iconSvg}
+				<span>Izbriši Sliku</span>
+			`;
 			deleteButton.className = "imgDeleteButton";
 			deleteButton.id = image.name + "_delete_button";
 			deleteButton.onclick = delete_image_from_collection.bind(null, image.name);
@@ -214,4 +232,15 @@ window.addEventListener('load', function () {
 	original_name = document.getElementById('Title').value;
 
 	load_images_in_collection();
+
+	document.addEventListener('keydown', (event) => {
+		if (event.ctrlKey && event.key === 'Enter') {
+			const activeElement = document.activeElement;
+
+			if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+	  			event.preventDefault();
+				activeElement.blur();
+			}
+		}
+	});
 });
