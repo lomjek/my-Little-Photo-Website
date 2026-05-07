@@ -2,37 +2,34 @@
 
 ROOT_PATH=$(dirname "$(readlink -f "$0")")"/"
 
-echo "Building Server Components in" $ROOT_PATH;
-
-echo "";
-
-if command -v ldc2 >/dev/null 2>&1; then
-    DC="ldc2"
-elif command -v ldc >/dev/null 2>&1; then
-    DC="ldc"
-else
-    echo "Error: ldc2 or ldc not found."
-    exit 1
-fi
-
-$DC --version | head -n 2
-
-echo "module root_conf; enum root_path = \"${ROOT_PATH}\";" > ./libs/root_conf.d
-echo "";
-
 CD="\033[0m" #Color Default
 CB="\033[34m" #Color Blue
+CY="\033[33m" #Color Yellow
+CR="\033[31m"
 
-if [ "$1" = "final" ]; then
-    echo $CB"Compiling install_helper.d"$CD
-    $DC -O -release -od=. -of=./installer.dc ./install_helper.d
-fi
+echo "Building Server Components in"$CB $ROOT_PATH $CD;
+echo "Please only build from the directory, the code is in.";
 
-echo $CB"Compiling libs/iod.d"$CD
-$DC -O -release -od=./libs -of=./libs/iod.dc ./libs/iod.d
+echo "";
 
-echo $CB"Compiling libs/process_image.d"$CD
-$DC -O -release -od=./libs -of=./libs/process_image.dc ./libs/process_image.d
+echo "Writing local variables to configuration";
 
-echo $CB"Compiling libs/images.d"$CD
-$DC -O -release -od=./libs -of=./libs/images.dc ./libs/images.d
+echo """
+module libs.root_conf;
+enum root_path = \"${ROOT_PATH}\";
+
+enum ffmpeg_path = \"$(which ffmpeg)\";
+enum ffprobe_path = \"$(which ffprobe)\";
+
+enum nice_path = \"$(which nice)\";
+""" > ./libs/root_conf.d
+
+echo "";
+
+dub build --config=libs;
+
+echo "";
+
+dub build --config=install_helper;
+
+echo "";

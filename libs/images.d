@@ -130,7 +130,7 @@ string change_collection_of_image(string collection, string image_name, string n
 }
 
 //MARK:MAIN
-void main(string[] args)
+void old_main(string[] args)
 {
 	writeln("Welcome");
 	if (args.length == 5)

@@ -8,3 +8,7 @@ update/.htpasswd
 #Ide files
 .vscode
 .idea
+
+#Binaries
+install
+backend

@@ -70,7 +70,7 @@ void write_iod_to_file()
 	conf_file.close();
 }
 
-void main(string[] args)
+void get_iod(string[] args)
 {
 	if (args.length > 1 && strip(args[1]) == "override")
 	{ //Handle force override

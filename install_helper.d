@@ -116,7 +116,7 @@ void main()
 {
 	writeln("We are going to register this site in apache2");
 
-	auto ffmpeg_install = execute(["ffmpeg", "-version"]);
+	auto ffmpeg_install = execute([ffmpeg_path, "-version"]);
 	if (ffmpeg_install.status != 0)
 	{
 		writeln("You don't have a valid ffmpeg installation...");

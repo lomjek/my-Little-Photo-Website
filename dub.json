@@ -1,0 +1,30 @@
+{
+	"authors": [
+		"lomjek"
+	],
+	"copyright": "Copyright © 2026, lomjek",
+	"description": "The backend for my little photo website...",
+	"license": "LGPL-3.0-or-later",
+	"name": "my-little-photo-website",
+	"importPaths": [
+		"./"
+	],
+	"configurations": [
+		{
+			"name": "libs",
+			"targetType": "executable",
+			"targetName": "backend",
+			"sourceFiles": [
+				"libs/*.d"
+			]
+		},
+		{
+			"name": "install_helper",
+			"targetType": "executable",
+			"targetName": "install",
+			"sourceFiles": [
+				"install_helper.d"
+			]
+		}
+	]
+}

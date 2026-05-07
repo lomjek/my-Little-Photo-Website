@@ -56,8 +56,8 @@ string generate_thumbnail_path(string img_path)
 img_size get_original_res(string path)
 {
 	auto ffmpeg = execute([
-		"nice", "-n", "15",
-		"ffprobe",
+		nice_path, "-n", "15",
+		ffprobe_path,
 		"-v", "error", //Only print errors, if they happened...
 		"-select_streams", "v:0", //Read the first visual stream...
 		"-show_entries", "stream=width,height", //Get the correct info
@@ -121,7 +121,7 @@ bool crop_img_to_ar(string input_path, double ar, img_size original_size, string
 	}
 
 	auto ffmpeg = execute([
-		"ffmpeg",
+		ffmpeg_path,
 		"-y",
 		"-i", input_path,
 		"-c:v", "libwebp",
@@ -160,7 +160,7 @@ bool process_thumbnail(string input_path, string main_img_path)
 	}
 
 	auto ffmpeg = execute([
-		"ffmpeg",
+		ffmpeg_path,
 		"-y",
 		"-i", temp_path,
 		"-c:v", "libwebp",
@@ -177,7 +177,7 @@ bool process_image(string input_path, string collection, string file_name)
 {
 	string main_img_path = generate_img_path(collection, file_name);
 	auto ffmpeg = execute([
-		"ffmpeg",
+		ffmpeg_path,
 		"-y",
 		"-i", input_path,
 		"-c:v", "libwebp",
@@ -186,7 +186,7 @@ bool process_image(string input_path, string collection, string file_name)
 	]);
 
 	writeln(escapeShellCommand([
-			"ffmpeg",
+			ffmpeg_path,
 			"-y",
 			"-i", input_path,
 			"-c:v", "libwebp",
@@ -257,7 +257,7 @@ bool regenerate_thumbnails()
 }
 
 // MARK: MAIN
-void main(string[] args)
+void old_main(string[] args)
 {
 	aspect_ratios = [
 		700.0 / 525: img_size(700, 525),
